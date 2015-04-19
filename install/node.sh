@@ -1,6 +1,6 @@
 #!/bin/bash
 # Some variables
-VERSION="0.12.2"
+VERSION=${1:-'0.12.2'}
 PLATFORM="linux-x64"
 NODE_PATH="${HOME}/nodejs"
 
