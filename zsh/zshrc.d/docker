@@ -1,0 +1,16 @@
+# Thanks to http://www.calazan.com/docker-cleanup-commands/
+
+# Kill all running containers.
+alias dockerkillall='docker kill $(docker ps -q)'
+
+# Delete all stopped containers.
+alias dockercleanc='printf "\n>>> Deleting stopped containers\n\n" && docker rm $(docker ps -a -q)'
+
+# Delete all untagged images.
+alias dockercleani='printf "\n>>> Deleting untagged images\n\n" && docker rmi $(docker images -q -f dangling=true)'
+
+# Delete all stopped containers and untagged images.
+alias dockerclean='dockercleanc || true && dockercleani'
+
+# Thanks to http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-io-containers
+alias dockercleanoldc='docker ps -a | grep "weeks ago" | awk "{print \$1}" | xargs docker rm'
