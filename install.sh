@@ -65,8 +65,16 @@ vim +PluginInstall +qall
 }
 
 ##
+# tmux configuration
+##
+[[ ! -f ~/.tmux.conf ]] || rm ~/.tmux.conf
+ln -s  ${DIR}/tmux/tmux.conf ~/.tmux.conf
+
+##
 # git configuration
 ##
+[[ ! -f ~/.gitconfig ]] || rm ~/.gitconfig
+ln -s  ${DIR}/git/gitconfig ~/.gitconfig
 echo -n "Would you like to configure your git name and email? (y/n) => "; read answer
 if [[ $answer = "Y" ]] || [[ $answer = "y" ]]; then
     echo -n "What is your git user name => "; read name

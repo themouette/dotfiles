@@ -1,0 +1,55 @@
+[merge]
+  tool = vimdiff
+[core]
+  editor = vim
+[color]
+  ui = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  diff = auto
+[color "branch"]
+  current = yellow
+  local = yellow
+  remote = green
+  current = yellow
+  current = yellow
+  current = yellow
+  current = yellow
+  current = yellow
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  old = red 
+  new = green
+  meta = yellow
+  frag = magenta
+  old = red 
+  new = green
+  meta = yellow
+  frag = magenta
+  old = red 
+  new = green
+  meta = yellow
+  frag = magenta
+  old = red 
+  new = green
+  meta = yellow
+  frag = magenta
+  old = red 
+  new = green
+  meta = yellow
+  frag = magenta
+  old = red 
+  new = green
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+   logg = log --graph --decorate
+   lol = log --graph --decorate --pretty=oneline --abbrev-commit
+   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+[user]
+	name = Julien Muetton
+	email = julien@muetton.me
