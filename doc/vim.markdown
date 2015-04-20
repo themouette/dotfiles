@@ -1,6 +1,8 @@
 Vim commands
 ============
 
+## Bindings
+
 Note: the **map leader** is `,`.
 
 * `:W` save current buffer using sudo
@@ -20,3 +22,8 @@ Note: the **map leader** is `,`.
 
 * `<leader>l` show/hide hidden chars
 * `<leader>m` call make
+
+## Commands
+
+To add a new spell language, just run `set spelllang=fr`. This will
+automatically install dictionary.

@@ -1,3 +1,4 @@
 # ignore installed bundles
 /vim/vim/bundle/
 /vim/vim/.netrwhist
+/vim/vim/spell
