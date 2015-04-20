@@ -1,6 +1,8 @@
 Vim commands
 ============
 
+Note: the **map leader** is `,`.
+
 * `:W` save current buffer using sudo
 
 * `F2` toggle paste mode
