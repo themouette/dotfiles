@@ -27,3 +27,6 @@ Note: the **map leader** is `,`.
 
 To add a new spell language, just run `set spelllang=fr`. This will
 automatically install dictionary.
+
+Close **syntastic** error panel using `:lclose`
+
