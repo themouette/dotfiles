@@ -27,6 +27,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -207,28 +208,10 @@ autocmd BufReadPost *
 nmap <leader>l :set list!<CR>
 set listchars=nbsp:¤,tab:>-,trail:¤,extends:>,precedes:<,eol:¬,trail:·
 
-" highlight trailing whitespaces
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
-
 " Does not work under version 7.1.6
 if version >= 716
     autocmd BufWinLeave * call clearmatches()
 endif
-
-" automatically remove trailing whitespace before write
-function! StripTrailingWhitespace()
-    normal mZ
-    %s/\s\+$//e
-    if line("'Z") != line(".")
-        echo "Stripped whitespace\n"
-    endif
-    normal `Z
-endfunction
 
 " tab mappings
 map <leader>tp :tabprevious<cr>

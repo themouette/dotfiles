@@ -1,3 +1,2 @@
-" Auto remove tailing spaces
-autocmd BufWritePre *.markdown,*.md,*.mkd :call StripTrailingWhitespace()
-
+setlocal colorcolumn=80
+setlocal spell
