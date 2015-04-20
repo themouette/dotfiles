@@ -14,6 +14,7 @@ Refer to dedicateddocumentation to learn more:
 
 * [zsh usage](https://github.com/themouette/dotfiles/blob/master/doc/zsh.markdown)
 * [vim usage](https://github.com/themouette/dotfiles/blob/master/doc/vim.markdown)
+* [git usage](https://github.com/themouette/dotfiles/blob/master/doc/git.markdown)
 
 ## Install NodeJs
 
