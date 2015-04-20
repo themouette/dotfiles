@@ -10,7 +10,7 @@ cd dotfiles
 ./install.sh
 ```
 
-Refer to dedicateddocumentation to learn more:
+Refer to dedicated documentation to learn more:
 
 * [zsh usage](https://github.com/themouette/dotfiles/blob/master/doc/zsh.markdown)
 * [vim usage](https://github.com/themouette/dotfiles/blob/master/doc/vim.markdown)
