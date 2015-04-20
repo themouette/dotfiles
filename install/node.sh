@@ -22,3 +22,5 @@ npm config set prefix '${HOME}/.npm-packages'
 
 npm install -g npm@latest
 sudo ln -fs "${HOME}/.npm-packages/bin/npm" /usr/bin/npm
+
+npm install -g eslint
