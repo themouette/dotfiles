@@ -54,7 +54,9 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
-source $HOME/.zshrc.d/*
+for file in $HOME/.zshrc.d/*; do
+    source "$file"
+done
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
