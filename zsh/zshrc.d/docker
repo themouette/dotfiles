@@ -14,3 +14,5 @@ alias dockerclean='dockercleanc || true && dockercleani'
 
 # Thanks to http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-io-containers
 alias dockercleanoldc='docker ps -a | grep "weeks ago" | awk "{print \$1}" | xargs docker rm'
+
+alias fig='docker-compose'
