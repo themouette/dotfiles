@@ -18,9 +18,9 @@ Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 
 " command t
-Plugin 'git://git.wincent.com/command-t.git'
+"Plugin 'git://git.wincent.com/command-t.git'
 " ctrlp.vim is a pure vimscript replacement for command-t
-"Plugin 'kien/ctrlp.vim'
+Plugin 'kien/ctrlp.vim'
 
 " Install ultisnips.
 Plugin 'SirVer/ultisnips'
@@ -28,6 +28,7 @@ Plugin 'honza/vim-snippets'
 
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'mustache/vim-mustache-handlebars'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
