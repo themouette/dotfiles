@@ -1,3 +1,39 @@
 snippet log "Console log" !b
 console.log(${0});
 endsnippet
+
+snippet it "mocha it" !b
+it('${1:should}', (${2:done}) => {
+  ${3}
+});
+endsnippet
+
+snippet desc "mocha describe" !b
+describe('${1}', () => {
+  ${2}
+});
+endsnippet
+
+snippet describe "mocha describe" !b
+describe('${1}', () => {
+  ${2}
+});
+endsnippet
+
+snippet Component "React component" b
+import React, { PropTypes, Component } from 'react';
+
+const { func } = PropTypes;
+
+class ${1:`!p
+snip.rv = snip.basename[0].upper() + snip.basename[1:]`} extends Component {
+  static propTypes = {};
+  static defaultProps = {};
+
+  render() {
+    return ${2:<p>Hello World</p>}$0;
+  }
+}
+
+export default $1;
+endsnippet

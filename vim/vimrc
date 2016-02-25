@@ -13,7 +13,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'JarrodCTaylor/vim-256-color-schemes'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 
@@ -29,6 +30,10 @@ Plugin 'honza/vim-snippets'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'cakebaker/scss-syntax.vim'
+
+" Elixir
+Plugin 'elixir-lang/vim-elixir'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.

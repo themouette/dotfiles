@@ -24,9 +24,10 @@ command -v apt-get >/dev/null 2>&1 && {
 # Install oh-my-zsh
 [[ -d ~/.oh-my-zsh ]] || curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 # Install zsh configuration
-rm -rf ~/.zshrc ~/.zshrc.d > /dev/null 2>&1
+rm -rf ~/.zshrc ~/.zshrc.d ~/.zsh-custom > /dev/null 2>&1
 ln -s ${DIR}/zsh/zshrc ~/.zshrc
 ln -s ${DIR}/zsh/zshrc.d ~/.zshrc.d
+ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
 
 
 ##

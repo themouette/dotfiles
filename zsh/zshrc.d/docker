@@ -16,3 +16,4 @@ alias dockerclean='dockercleanc || true && dockercleani'
 alias dockercleanoldc='docker ps -a | grep "weeks ago" | awk "{print \$1}" | xargs docker rm'
 
 alias fig='docker-compose'
+alias fig-prod="docker-compose -f docker-compose.yml -f docker-compose.prod.yml"
