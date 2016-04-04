@@ -35,6 +35,9 @@ Plugin 'cakebaker/scss-syntax.vim'
 " Elixir
 Plugin 'elixir-lang/vim-elixir'
 
+" Jinja2
+Plugin 'glench/vim-jinja2-syntax'
+
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
