@@ -17,3 +17,17 @@ alias dockercleanoldc='docker ps -a | grep "weeks ago" | awk "{print \$1}" | xar
 
 alias fig='docker-compose'
 alias fig-prod="docker-compose -f docker-compose.yml -f docker-compose.prod.yml"
+
+# thanks to http://blog.yohanliyanage.com/2015/05/docker-clean-up-after-yourself/
+alias dockergc='docker rm -v $(docker ps -a -q -f status=exited) ; docker rmi $(docker images -f \"dangling=true\" -q) ; docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --rm martin/docker-cleanup-volumes'
+
+# Troubleshooting
+#
+# If reached file watcher limit
+# echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+#
+# If fork or max-thread error is encountered:
+# echo "kernel.threads-max = 50000" | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+#
+# If max reached max limit of file descriptors:
+# echo "fs.file-max=100000"  | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
