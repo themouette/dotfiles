@@ -70,6 +70,8 @@ vim +PluginInstall +qall
 ##
 [[ ! -f ~/.tmux.conf ]] || rm ~/.tmux.conf
 ln -s  ${DIR}/tmux/tmux.conf ~/.tmux.conf
+mkdir -p ~/.tmux/plugins/
+[[ -d ~/.tmux/plugins/tpm ]] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ##
 # git configuration
