@@ -12,6 +12,9 @@ autocmd BufEnter * setlocal formatoptions+=o
 autocmd BufEnter * setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd BufEnter * setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
+" configure pangloss/vim-javascript
+let b:javascript_fold = 1
+
 " use eslint to check syntax
 let g:syntastic_javascript_checkers = ['eslint']
 nmap <buffer> <C-l> :!eslint %<CR>
@@ -23,3 +26,7 @@ let b:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{
 " configure https://github.com/mxw/vim-jsx
 let g:jsx_ext_required = 0
 
+" lint all curly braces to add spaces
+" Not sure this is correctly bound though
+" :%s:\$\@<!{\s*\([^}]\{-1,}\)\s*}:{ \1 }:<CR>
+" :%s:\[\s*\([^\]]\{-}\)\s*]:[\1]:gc

@@ -20,13 +20,22 @@ describe('${1}', () => {
 });
 endsnippet
 
+snippet class "ES2015 class" b
+class ${1:`!p snip.rv = snip.basename[0].upper() + snip.basename[1:]`} {
+}
+endsnippet
+
+###########################################
+# Snippets for React/redux/enzyme projects
+###########################################
+
 snippet Component "React component" b
 import React, { PropTypes, Component } from 'react';
 
+
 const { func } = PropTypes;
 
-class ${1:`!p
-snip.rv = snip.basename[0].upper() + snip.basename[1:]`} extends Component {
+class ${1:`!p snip.rv = component_name(snip)`} extends Component {
   static propTypes = {};
   static defaultProps = {};
 
@@ -38,7 +47,67 @@ snip.rv = snip.basename[0].upper() + snip.basename[1:]`} extends Component {
 export default $1;
 endsnippet
 
-snippet class "ES2015 class" b
-class ${1:`!p snip.rv = snip.basename[0].upper() + snip.basename[1:]`} {
-}
+snippet enzyme "Enzyme and mocha test case" b
+import React from 'react';
+import { expect } from 'chai';
+import { ${1:mount} } from 'enzyme';
+
+import `!p snip.rv = component_name(snip)` from '`!p snip.rv = component_relative_path(snip, path)`';
+
+
+describe('${2:`!p snip.rv = component_fully_qualified_path(snip, path)`}', () => {
+	${0}
+});
 endsnippet
+
+snippet itMount "Enzyme and mocha mount test" b
+it('${1:should render}', () => {
+	const wrapper = mount(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
+
+	expect(wrapper).to.${4:not.be.blank()};
+});
+endsnippet
+
+snippet itRender "Enzyme and mocha render test" b
+it('${1:should render}', () => {
+	const wrapper = render(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
+
+	expect(wrapper).to.${4:not.be.blank()};
+});
+endsnippet
+
+snippet itShallow "Enzyme and mocha shallow render test" b
+it('${1:should render}', () => {
+	const wrapper = shallow(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
+
+	expect(wrapper).to.${4:not.be.blank()};
+});
+endsnippet
+
+
+global !p
+import re
+
+def component_name(snip):
+	"""
+	return the component name in test or component file
+	"""
+	return (snip.basename[0].upper() + snip.basename[1:]).replace('-test', '')
+
+def component_relative_path(snip, path):
+	"""
+	return the component relative path from current file
+	there is no magic, for now it only replaces __tests__ with ../
+	"""
+	fullPath = re.sub(r"^.*__tests?__.*$", '../', path)
+	return fullPath + component_name(snip)
+
+def component_fully_qualified_path(snip, path):
+	"""
+	return the component path relative to src
+	"""
+	fullPath = re.sub(r"__tests?__.*$", '', path)
+	fullPath = re.sub(r"^.*src/", '', fullPath)
+	return fullPath + component_name(snip)
+
+endglobal
