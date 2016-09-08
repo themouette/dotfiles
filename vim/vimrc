@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
+set shell=/bin/zsh            " Use zsh as shell
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -29,6 +30,7 @@ Plugin 'honza/vim-snippets'
 
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'flowtype/vim-flow'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'cakebaker/scss-syntax.vim'
 
@@ -62,10 +64,10 @@ set title
 language en_US.utf8                 " set user interface anguage to en
 
 syntax on
-
-filetype on
-filetype plugin on
-filetype indent on
+" default omnifunc completion
+" from " http://www.belchak.com/2011/01/31/code-completion-for-python-and-django-in-vim/
+set omnifunc=syntaxcomplete#Complete
+set ofu=syntaxcomplete#Complete
 
 " Global
 " set hidden ruler wmnu               " Hide buffer instead of abandoning when unloading
@@ -289,4 +291,11 @@ if &term =~ '^screen' && exists('$TMUX')
     execute "set <F10>=\e[21;*~"
     execute "set <F11>=\e[23;*~"
     execute "set <F12>=\e[24;*~"
+endif
+
+" from http://stackoverflow.com/a/7725796
+" terminal seems to interpret badly <C-Space>
+inoremap <C-Space> <C-x><C-o>
+if !has("gui_running")
+  inoremap <C-@> <C-x><C-o>
 endif

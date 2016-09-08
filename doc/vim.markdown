@@ -23,10 +23,21 @@ Note: the **map leader** is `,`.
 * `<leader>l` show/hide hidden chars
 * `<leader>m` call make
 
+* `<C-Space>` call onmifunc completion
+
 ## Commands
 
 To add a new spell language, just run `set spelllang=fr`. This will
 automatically install dictionary.
 
 Close **syntastic** error panel using `:lclose`
+
+## Folding
+
+By default folding is off. To turn it on use `zi`
+
+## Javascript Specific
+
+* `F5` :FlowToggle (toggle flow check on file save)
+* `<C-l>` Lint current file with eslint
 
