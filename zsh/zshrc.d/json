@@ -1,0 +1,7 @@
+# Taken from http://stackoverflow.com/a/1920585/1070271
+#
+# Usage:
+#
+# echo '{"foo": "lorem", "bar": "ipsum"}' | prettyjson
+# prettyjson toto.json
+alias prettyjson='python -m json.tool'
