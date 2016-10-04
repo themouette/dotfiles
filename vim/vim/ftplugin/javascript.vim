@@ -1,25 +1,25 @@
 " activate javscript autocompletion
-:setlocal omnifunc=javascriptcomplete#CompleteJS
+setlocal omnifunc=javascriptcomplete#CompleteJS
 
 " override default behavior
 " insert comment on new line
-:setlocal formatoptions+=c
-:setlocal formatoptions+=r
-:setlocal formatoptions+=o
+set formatoptions+=c
+set formatoptions+=r
+set formatoptions+=o
 
 " set options for gandi projects
 " autocmd BufEnter ~/Projects/gandi/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
 " autocmd BufEnter ~/Projects/caliopen/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " Gandi got me into 2 spaces indent instead of 4
-:setlocal tabstop=2 shiftwidth=2 softtabstop=2
-:setlocal tabstop=2 shiftwidth=2 softtabstop=2
+setlocal tabstop=2 shiftwidth=2 softtabstop=2
+setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " Use zi to switch folding
-:setlocal nofoldenable
+setlocal nofoldenable
 
 " configure pangloss/vim-javascript
-:setlocal foldmethod=syntax
+setlocal foldmethod=syntax
 let b:javascript_fold = 1
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1

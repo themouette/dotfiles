@@ -240,7 +240,7 @@ function! <SID>MkdirsIfNotExists(directory)
 endfunction
 
 " do not auto insert comment chars on newline
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+set formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Gist
 let g:gist_clip_command     = 'pbcopy'
