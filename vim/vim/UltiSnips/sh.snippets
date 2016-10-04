@@ -1,0 +1,76 @@
+snippet bash "set a bash she bang" b
+#!/usr/bin/env bash
+
+# ${1:General description and goal}
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/${2:..}" && pwd )"
+
+${0}
+endsnippet
+
+snippet func "add a bash function" b
+################################################################################
+# ${2:$1 description}
+# Globals:
+#   ${3:None}
+# Arguments:
+#   ${4:None}
+# Returns
+#   ${5:None}
+################################################################################
+function ${1} {
+  ${0}
+}
+endsnippet
+
+snippet eot
+cat <<EOT >> "${1}"
+${2:${VISUAL}}
+EOT
+$0
+endsnippet
+
+snippet args
+SCRIPT=`!p snip.rv = snip.basename`
+INFO="
+${1:Program help message}
+"
+
+function usage
+{
+   echo
+   echo $INFO
+   echo
+   echo -e " \033[4mUsage:\033[0m $SCRIPT -p <nim_port>"
+   echo
+   echo "          Options :"
+   echo "              -h				display this help"
+   echo "              -p <port>		port number"
+   echo
+   echo -e " \033[4mExemples:\033[0m "
+   echo -e "       $SCRIPT -p 7001"
+   echo
+
+   exit 255
+}
+
+
+# Lecture des parametres
+o_port=""
+while getopts "p:h" options; do
+   case $options in
+      p) o_port=$OPTARG
+         ;;
+    h|?) usage
+         ;;
+      *) usage
+         ;;
+  esac
+done
+# remove read arguments
+shift $(( OPTIND - 1 ))
+endsnippet
