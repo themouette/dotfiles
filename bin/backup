@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+
+# Manage backups on a remote machine accessible by rsync
+# You should launch this manualy once in a while.
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+CONFIG_FILE=~/.backups
+EXCLUDE_FILES_DEFINITION=~/.backupignorelist
+REMOTE_EXCLUSION_DEFINITION="https://raw.githubusercontent.com/rubo77/rsync-homedir-excludes/master/rsync-homedir-excludes.txt"
+SCRIPT=backup
+INFO="
+Backup local home to a remote location.
+
+Configuration can be found in ${CONFIG_FILE}.
+If no configuration file is found, some questions are asked to generate it.
+
+All files in ${REMOTE_EXCLUSION_DEFINITION}
+"
+
+function usage
+{
+   echo
+   echo $INFO
+   echo
+   echo -e " \033[4mUsage:\033[0m $SCRIPT -p <nim_port>"
+   echo
+   echo "          Options :"
+   echo "              -h           display this help"
+   echo "              -c           force configuration regeneration"
+   echo "              -r           refresh exclusion list definition"
+   echo
+   echo -e " \033[4mExemples:\033[0m "
+   echo -e "       $SCRIPT"
+   echo -e "       $SCRIPT -c"
+   echo
+
+   exit 255
+}
+
+
+# Read parameters
+o_generate_config=""
+o_refresh_exclude_list=""
+while getopts "crh" options; do
+   case $options in
+      c) o_generate_config="1"
+        ;;
+      r) o_refresh_exclude_list="1"
+        ;;
+    h|?) usage
+         ;;
+      *) usage
+         ;;
+  esac
+done
+# remove read arguments
+shift $(( OPTIND - 1 ))
+
+SERVER_ADDRESS=""
+REMOTE_DIR=""
+REMOTE_USER=""
+
+################################################################################
+# generate configuration file from user inputs
+# Globals:
+#   $CONFIG_FILE
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function generate_config_file {
+  # Ask for remote server information
+  read -p "Remote server address? (example: 192.16.1.33, my.example.org) " \
+    -e -i "${SERVER_ADDRESS}" SERVER_ADDRESS
+
+  read -p "Remote location? (example: /srv/backups/$USER) " \
+    -e -i "${REMOTE_DIR}" REMOTE_DIR
+
+  read -p "Remote user? " \
+    -e -i "${REMOTE_USER:-$USER}" REMOTE_USER
+
+  cat > $CONFIG_FILE <<- EOF
+# This is an automatially generated file
+# See https://github.com/themouette/dotfiles for further information
+
+SERVER_ADDRESS="${SERVER_ADDRESS}"
+REMOTE_DIR="${REMOTE_DIR}"
+REMOTE_USER="${REMOTE_USER}"
+EOF
+}
+
+################################################################################
+# load backup configuration
+#
+# Set variables from $CONFIG_FILE
+# Globals:
+#   $CONFIG_FILE
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function load_config {
+  local force_config_generation="${1:-}"
+
+  [[ ! -e "$CONFIG_FILE" ]] || source $CONFIG_FILE
+
+  if [[ -n "${force_config_generation}" ]] || \
+    [[ -z "${SERVER_ADDRESS}" ]] || \
+    [[ -z "${REMOTE_DIR}" ]]; then
+    generate_config_file
+    load_config
+  fi
+}
+
+################################################################################
+# ensure exclusion file is present
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function ensure_exclusion {
+  local force_redownload="${1:-}"
+
+  if [[ -n "${force_redownload}" ]] || \
+    [[ ! -e "${EXCLUDE_FILES_DEFINITION}" ]] ; then
+    wget "${REMOTE_EXCLUSION_DEFINITION}" \
+      -O "${EXCLUDE_FILES_DEFINITION}"
+  fi
+}
+
+################################################################################
+# do the actual backup
+# Globals:
+#   $EXCLUDE_FILES_DEFINITION
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function backup {
+  rsync -aP --exclude-from="${EXCLUDE_FILES_DEFINITION}" /home/$USER/ "${REMOTE_USER}@${SERVER_ADDRESS}:${REMOTE_DIR}"
+}
+
+################################################################################
+# Program main function
+# Globals:
+#   $o_generate_config
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function main {
+  load_config $o_generate_config
+  ensure_exclusion $o_refresh_exclude_list
+  backup
+}
+
+main $@

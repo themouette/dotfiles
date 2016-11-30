@@ -86,6 +86,16 @@ if [[ $answer = "Y" ]] || [[ $answer = "y" ]]; then
     git config --global user.email "$email"
 fi
 
+##
+# Add some binaries
+##
+if [[ -d "./bin/" ]]; then
+    for file in ${DIR}/bin/* ; do
+        [[ -f "/usr/local/bin/$(basename $file)" ]] || \
+            sudo ln -s "${file}" "/usr/local/bin/$(basename $file)"
+    done
+fi
+
 echo "*******************************"
 echo "*    Restart your terminal    *"
 echo "*******************************"
