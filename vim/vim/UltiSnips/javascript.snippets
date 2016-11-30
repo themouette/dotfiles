@@ -30,7 +30,18 @@ endsnippet
 # Snippets for React/redux/enzyme projects
 ###########################################
 
-snippet Component "React component" b
+snippet esldl "eslint disable line"
+// eslint-disable-line $0
+endsnippet
+snippet esldl "eslint disable next line" b
+// eslint-disable-next-line $0
+endsnippet
+
+snippet esldnl "eslint disable next line" b
+// eslint-disable-next-line $0
+endsnippet
+
+snippet Component "React component (PropTypes)" b
 import React, { PropTypes, Component } from 'react';
 
 
@@ -55,6 +66,65 @@ class ${1:`!p snip.rv = component_name(snip)`} extends Component {
 export default $1;
 endsnippet
 
+snippet Component "React component (flow)" b
+/* @flow */
+import React, { Component } from 'react';
+
+
+type $1Props = {};
+
+/**
+ * $1 component
+ */
+class ${1:`!p snip.rv = component_name(snip)`} extends Component {
+  static defaultProps = {};
+  props: $1Props;
+
+  /**
+   * Render component
+   * @return {ReactElement}
+   */
+  render() {
+    return (
+      ${2:<p>Hello World</p>}$0
+    );
+  }
+}
+
+export default $1;
+endsnippet
+
+snippet Route "React route (flow)" b
+/* @flow */
+import { compose, bindActionCreators } from 'redux';
+import { asyncConnect } from 'gandi.react-async-connect';
+import { withTranslator } from 'gandi.translate';
+import { withBreadcrumb } from 'gandi.react-admin-layout';
+
+import $1Presenter from './components/Presenter';
+
+
+type $1Props = {};
+
+const mapStateToProps = (state: State, ownProps: $1Props) => {
+  return {
+	$0
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+}, dispatch);
+
+export default compose(
+  withBreadcrumb(({ __, params }) => ({
+    to: \`/\$\{params.id}\`,
+    title: __('${2}'),
+  })),
+  withTranslator(),
+  asyncConnect(mapStateToProps, mapDispatchToProps)
+)(${1:`!p snip.rv = component_name(snip)`}Presenter);
+endsnippet
+
 snippet enzyme "Enzyme and mocha test case" b
 import React from 'react';
 import { expect } from 'chai';
@@ -72,7 +142,7 @@ snippet itMount "Enzyme and mocha mount test" b
 it('${1:should render}', () => {
   const wrapper = mount(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
 
-  expect(wrapper).to.${4:not.be.blank()};
+  expect(wrapper).to.${4:be.present()};
 });
 endsnippet
 
@@ -80,7 +150,7 @@ snippet itRender "Enzyme and mocha render test" b
 it('${1:should render}', () => {
   const wrapper = render(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
 
-  expect(wrapper).to.${4:not.be.blank()};
+  expect(wrapper).to.${4:be.present()};
 });
 endsnippet
 
@@ -88,7 +158,7 @@ snippet itShallow "Enzyme and mocha shallow render test" b
 it('${1:should render}', () => {
   const wrapper = shallow(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
 
-  expect(wrapper).to.${4:not.be.blank()};
+  expect(wrapper).to.${4:be.present()};
 });
 endsnippet
 
