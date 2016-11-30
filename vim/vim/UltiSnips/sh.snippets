@@ -27,6 +27,23 @@ function ${1} {
 }
 endsnippet
 
+snippet main "add a main bash function" b
+################################################################################
+# Program main function
+# Globals:
+#   ${1:None}
+# Arguments:
+#   ${2:None}
+# Returns
+#   ${3:None}
+################################################################################
+function main {
+  ${0}
+}
+
+main $@
+endsnippet
+
 snippet eot
 cat <<EOT >> "${1}"
 ${2:${VISUAL}}
@@ -48,8 +65,8 @@ function usage
    echo -e " \033[4mUsage:\033[0m $SCRIPT -p <nim_port>"
    echo
    echo "          Options :"
-   echo "              -h				display this help"
-   echo "              -p <port>		port number"
+   echo "              -h           display this help"
+   echo "              -p <port>    port number"
    echo
    echo -e " \033[4mExemples:\033[0m "
    echo -e "       $SCRIPT -p 7001"
@@ -59,7 +76,7 @@ function usage
 }
 
 
-# Lecture des parametres
+# Read parameters
 o_port=""
 while getopts "p:h" options; do
    case $options in
