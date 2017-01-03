@@ -104,11 +104,19 @@ import { withBreadcrumb } from 'gandi.react-admin-layout';
 import $1Presenter from './components/Presenter';
 
 
-type $1Props = {};
+type $1Props = {
+  translatorProps: { __: Function },
+  params: { },
+};
 
 const mapStateToProps = (state: State, ownProps: $1Props) => {
+	const __ = ownProps.translatorProps.__;
   return {
-	$0
+		__,
+		theme: 'show',
+		backUrl: `/`,
+		h2: __('Blah'),
+		$0
   };
 };
 
@@ -120,9 +128,56 @@ export default compose(
     to: \`/\$\{params.id}\`,
     title: __('${2}'),
   })),
-  withTranslator(),
+  withTranslator({ propsNamespace: 'translatorProps' }),
   asyncConnect(mapStateToProps, mapDispatchToProps)
 )(${1:`!p snip.rv = component_name(snip)`}Presenter);
+endsnippet
+
+snippet Presenter "React presenter" b
+/* @flow */
+import React, { Component } from 'react';
+import { SecondaryTemplate } from 'gandi.react-admin-layout';
+
+
+type $1Props = {
+  translatorProps: { __: Function },
+  backUrl: string,
+  theme: string,
+  h2: string,
+};
+
+/**
+ * $1 component
+ */
+class ${1:`!p snip.rv = component_name(snip)`} extends Component {
+  static defaultProps = {};
+  props: $1Props;
+
+  decorateContent(...content: Array<ReactChildren>) {
+    return (
+      <SecondaryTemplate
+        h2={this.props.h2}
+        theme={this.props.theme}
+        backUrl={this.props.backUrl}
+        __={this.props.translatorProps.__}
+      >
+        {React.Children.toArray(content)}
+      </SecondaryTemplate>
+    );
+  }
+
+  /**
+   * Render component
+   * @return {ReactElement}
+   */
+  render() {
+    return this.decorateContent(
+      ${2:<p>Hello World</p>}$0
+    );
+  }
+}
+
+export default $1;
 endsnippet
 
 snippet enzyme "Enzyme and mocha test case" b
