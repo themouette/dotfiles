@@ -30,7 +30,7 @@ nmap <buffer> <C-l> :!eslint %<CR>
 " If available, use local eslint (thanks to
 " https://github.com/mtscout6/syntastic-local-eslint.vim)
 let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
-let b:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+let g:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
 
 " configure https://github.com/mxw/vim-jsx
 let g:jsx_ext_required = 0
@@ -39,12 +39,12 @@ let g:jsx_ext_required = 0
 " see https://github.com/flowtype/vim-flow
 
 "Use locally installed flow
-let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
-if matchstr(local_flow, "^\/\\w") == ''
-    let local_flow= getcwd() . "/" . local_flow
+let s:local_flow = finddir('node_modules', '.;') . '/.bin/flow'
+if matchstr(s:local_flow, "^\/\\w") == ''
+    let s:local_flow= getcwd() . "/" . s:local_flow
 endif
-if executable(local_flow)
-  let g:flow#flowpath = local_flow
+if executable(s:local_flow)
+  let g:flow#flowpath = s:local_flow
 endif
 
 " If flow binary was found, setup flow
