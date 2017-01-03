@@ -38,6 +38,23 @@ By default folding is off. To turn it on use `zi`
 
 ## Javascript Specific
 
-* `F5` :FlowToggle (toggle flow check on file save)
+* `F4` :FlowToggle (toggle flow check on file save)
 * `<C-l>` Lint current file with eslint
 
+## Nice to know vim tips
+
+### Variable scope
+
+See `:help internal-variables`
+
+It lists the following types:
+
+ * (nothing) In a function: local to a function; otherwise: global
+ * buffer-variable    b:     Local to the current buffer.
+ * window-variable    w:     Local to the current window.
+ * tabpage-variable   t:     Local to the current tab page.
+ * global-variable    g:     Global.
+ * local-variable     l:     Local to a function.
+ * script-variable    s:     Local to a :source'ed Vim script.
+ * function-argument  a:     Function argument (only inside a function).
+ * vim-variable       v:     Global, predefined by Vim.
