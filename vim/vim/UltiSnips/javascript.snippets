@@ -105,7 +105,7 @@ import $1Presenter from './components/Presenter';
 
 
 type $1Props = {
-  translatorProps: { __: Function },
+  translatorProps: GandiTranslatorProps,
   params: { },
 };
 
@@ -115,7 +115,7 @@ const mapStateToProps = (state: State, ownProps: $1Props) => {
 		__,
 		theme: 'show',
 		backUrl: `/`,
-		h2: __('Blah'),
+		h2: __('$2'),
 		$0
   };
 };
@@ -140,7 +140,7 @@ import { SecondaryTemplate } from 'gandi.react-admin-layout';
 
 
 type $1Props = {
-  translatorProps: { __: Function },
+  translatorProps: GandiTranslatorProps,
   backUrl: string,
   theme: string,
   h2: string,
