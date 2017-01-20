@@ -54,6 +54,9 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+for file in $HOME/.shrc.d/*; do
+    source "$file"
+done
 for file in $HOME/.zshrc.d/*; do
     source "$file"
 done

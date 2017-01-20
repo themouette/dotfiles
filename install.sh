@@ -18,6 +18,13 @@ command -v apt-get >/dev/null 2>&1 && {
 
 
 ##
+# sh configuration, common for bash and zsh
+##
+
+# Install sh commons
+ln -s ${DIR}/sh/shrc.d ~/.shrc.d
+
+##
 # zsh configuration
 ##
 
