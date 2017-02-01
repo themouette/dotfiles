@@ -223,11 +223,14 @@ endsnippet
 
 snippet descFetch "gandi.redux-fetcher test file" b
 import { expect } from 'chai';
-import { mockStore } from 'gandi.tests-helpers';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import {
-  assert${1:Get}CallMatch, mockFetcherMiddleware,
+  mockFetcherMiddleware, assert${1:Get}CallMatch,
 } from 'gandi.redux-fetcher/dist/test';
-
+import {
+  assertMatchStart, assertMatchSuccess, assertMatchFailure,
+} from 'gandi.redux-resource/dist/test';
 // Test with logger?
 import { createAppLogger } from 'gandi.redux-logger';
 // Test notifications?
@@ -238,57 +241,64 @@ import `!p snip.rv = subject_name(snip)` from '`!p snip.rv = subject_relative_pa
 
 
 describe('${2:`!p snip.rv = subject_fully_qualified_path(snip, path)`}', () => {
+  const createMockStore = (mockResponses, getState) => {
+    const middlewares = [thunk, mockFetcherMiddleware(mockResponses)];
+    return configureStore(middlewares)(getState);
+  };
+
   ${0}
 });
 endsnippet
 
 snippet itFetch "gandi.redux-fetcher middleware test case OK" b
-it('${1:should fetch}', (done) => {
-  const initialState = {};
+it('${1:should fetch}', () => {
   const responses = [
     [${2:200}, ${3:response}, { 'content-type': '${4:application/json}' }],
   ];
 
-  const expectedActions = [
-    assert${5:Get}CallMatch('${6:url}'),
-  ];
-  const store = mockStore(
-    initialState,
-    expectedActions,
-    [mockFetcherMiddleware(responses)],
-    done
-  );
-  store
-    .dispatch(${7:`!p snip.rv = subject_name(snip)`}())
-    .then(() => store.verify())
-    .catch(done);
+  const getState = () => ({});
+  const store = createMockStore(responses, getState);
+
+  return store
+    .dispatch(${5:action}(${6}))
+    .then(
+      () => {
+        expect(store).to.have.dispatchedActions([
+          assertMatchStart(resource.${7:fetch}),
+          assertGetCallMatch('${8:url}'),
+          assertMatchSuccess(resource.$7),
+        ]);
+      },
+      (err) => {
+        throw err;
+      }
+    );
 });
 endsnippet
 
 snippet itFetch "gandi.redux-fetcher middleware test case KO" b
-it('${1:should reject}', (done) => {
-  const initialState = {};
+it('${1:should reject}', () => {
   const responses = [
-    [${2:200}, ${3:response}, { 'content-type': '${4:application/json}' }],
+    [${2:400}, ${3:\{ message: 'error' \}}, { 'content-type': '${4:application/json}' }],
   ];
 
-  const expectedActions = [
-    assert${5:Get}CallMatch('${6:url}'),
-  ];
-  const store = mockStore(
-    initialState,
-    expectedActions,
-    [mockFetcherMiddleware(responses)],
-    done
-  );
-  store
-    .dispatch(${7:`!p snip.rv = subject_name(snip)`}())
-    .then(() => done(new Error('The promise should have been rejected')))
-    .catch(error => {
-      expect(error).to.deep.equal(fetchError);
-      store.verify();
-    })
-    .catch(done);
+  const getState = () => ({});
+  const store = createMockStore(responses, getState);
+
+  return store
+    .dispatch(${5:action}(${6}))
+    .then(
+      () => {
+        throw new Error('This action should have been rejected');
+      },
+      (err) => {
+        expect(store).to.have.dispatchedActions([
+          assertMatchStart(resource.${7:fetch}),
+          assertGetCallMatch('${8:url}'),
+          assertMatchFailure(resource.$7),
+        ]);
+      }
+    );
 });
 endsnippet
 
