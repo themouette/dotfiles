@@ -1,0 +1,31 @@
+# I folowed https://blog.g3rt.nl/upgrade-your-ssh-keys.html tu manage my ssh
+# keys.
+# But "My Gnome-keyring doesn't work anymore". So I disabled ssh for gnome
+# keyring thanks to https://askubuntu.com/questions/545172/how-do-i-disable-gnome-keyring-ssh-integration/594147#594147
+#
+# ```
+# gconftool-2 --set --type bool /apps/gnome-keyring/daemon-components/ssh false
+# ```
+#
+# I now use ssh agent to manage my keys.
+
+# ensure ssh agent is started.
+# `$ ssh-add -L`: check if keys are already upload or load them using the same command.
+# `$ ssh-add -D`: destroy your keys
+# thanks to http://drupal.star.bnl.gov/STAR/blog-entry/jeromel/2009/feb/06/how-safely-start-ssh-agent-bashrc
+test=`/bin/ps -ef | /bin/grep ssh-agent | /bin/grep -v grep  | /usr/bin/awk '{print $2}' | xargs`
+
+if [ "$test" = "" ]; then
+   # there is no agent running
+   if [ -e "$HOME/agent.sh" ]; then
+      # remove the old file
+      /bin/rm -f $HOME/agent.sh
+   fi;
+   # start a new agent
+   /usr/bin/ssh-agent | /bin/grep -v echo >&$HOME/agent.sh 
+fi;
+
+test -e $HOME/agent.sh && source $HOME/agent.sh
+
+alias kagent="kill -9 $SSH_AGENT_PID"
+
