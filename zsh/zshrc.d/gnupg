@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+
+################################################################################
+# Display help for gpgenv
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function gpgenv_help {
+    echo
+    echo Manage gnupg environments.
+    echo
+    echo -e " \033[4mUsage:\033[0m gpgenv [command]"
+    echo
+    echo
+    echo -e " \033[4mExemples:\033[0m "
+    echo -e "       gpgenv /tmp/gnupg"
+    echo -e "       gpgenv"
+    echo -e "       gpgenv help"
+    echo -e "       gpgenv env"
+    echo -e "       gpgenv backup /media/secret-store/gnupg-\$(date  +%Y-%m-%d).tgz"
+    echo -e "       gpgenv restore /media/secret-store/gnupg-$(date  +%Y-%m-%d).tgz"
+    echo
+}
+
+
+################################################################################
+# Swith gpg environment safely
+# Globals:
+#   GNUPGHOME
+# Arguments:
+#   NEW_HOME    the new home for gnupg manipulation
+# Returns
+#   None
+################################################################################
+function gpgenv_switch {
+    local NEW_HOME="${1:-}"
+
+    # Kill current gpg agent
+    # When there is several agent running it can cause issue
+    gpgconf --kill gpg-agent
+    [[ $(pgrep -c gpg-agent) -eq 0 ]] || {
+        echo "WARNING: Unable to kill all gpg-agent instances"
+        ps -aux | grep gpg-agent
+    }
+
+    # Create directory if required
+    [[ -z "${NEW_HOME}" ]] || {
+        mkdir -p "${NEW_HOME}"
+        chmod 700 "${NEW_HOME}"
+    }
+
+    export GNUPGHOME="${NEW_HOME}"
+    echo "new GNUPGHOME=${GNUPGHOME}"
+}
+
+################################################################################
+# backup a gpgenv.
+# Globals:
+#   GNUPGHOME
+# Arguments:
+#   destination     tgz file to backup
+# Returns
+#   None
+################################################################################
+function gpgenv_backup {
+    local TARGET="${1:-}"
+    TARGET="$(cd "$(dirname "$TARGET")"; pwd)/$(basename "$TARGET")"
+    local SRC="${GNUPGHOME:-$HOME/.gnupg}"
+    [[ -n "${TARGET}" ]] || {
+        echo "You must provide a target file"
+        echo "try /media/secret-store/gnupg-$(date  +%Y-%m-%d).tgz"
+        return 1
+    }
+    [[ ! -e "${TARGET}" ]] || {
+        echo "Destination already exists"
+        return 1
+    }
+    [[ "${TARGET}" =~ .tgz$ ]] || {
+        echo "You must provide a tgz filename."
+        echo "try ${TARGET}.tgz"
+        return 1
+    }
+    [[ -d "${SRC}" ]] || {
+        echo "Unable to find location to backup. Set it with GNUPGHOME env var."
+        return 1
+    }
+
+    $(cd "${SRC}" && tar -czf "${TARGET}" .)
+    echo "Created backup in ${TARGET}"
+    echo "To activate it, use"
+    echo "    gpgenv restore ${TARGET}"
+}
+
+################################################################################
+# Restore gpgenv from archive
+# Globals:
+#   GNUPGHOME
+# Arguments:
+#   backup                  backup archive to restore
+#   location (optional)     directory where to restore archive
+# Returns
+#   None
+################################################################################
+function gpgenv_restore {
+    local SRC="${1:-}"
+    local DEST="${2:-$(mktemp -d "/tmp/gnupg-XXXXX")}"
+
+    [[ -n "${SRC}" ]] || {
+        echo "You must provide a backup archive."
+        echo "try /media/secret-store/gnupg-$(date  +%Y-%m-%d).tgz"
+        return 1
+    }
+    [[ -f "${SRC}" ]] || {
+        echo "Unable to find backup archive."
+        return 1
+    }
+
+    $(cd "${DEST}" && tar -xvf "${SRC}")
+
+    echo "Restored backup in ${DEST}"
+    echo "To activate it, use"
+    echo "    gpgenv ${DEST}"
+}
+
+################################################################################
+# Manage gnupg environment
+# Globals:
+#   GNUPGHOME
+# Arguments:
+#   COMMAND command or new home dir
+# Returns
+#   None
+################################################################################
+function gpgenv {
+    local COMMAND="${1:-}"
+
+    case "$COMMAND" in
+        env )
+            echo "Current GNUPGHOME=${GNUPGHOME}"
+            ;;
+        backup )
+            shift
+            gpgenv_backup "$@"
+            ;;
+        restore )
+            shift
+            gpgenv_restore "$@"
+            ;;
+        help )
+            gpgenv_help
+            ;;
+        * )
+            gpgenv_switch "$COMMAND"
+            ;;
+    esac
+}
