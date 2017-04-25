@@ -17,15 +17,16 @@ function gpgenv_help {
     echo
     echo
     echo -e " \033[4mExemples:\033[0m "
-    echo -e "       gpgenv /tmp/gnupg"
-    echo -e "       gpgenv"
     echo -e "       gpgenv help"
-    echo -e "       gpgenv env"
+    echo -e "       gpgenv use /tmp/gnupg"
+    echo -e "       gpgenv use"
+    echo -e "       gpgenv create"
+    echo -e "       gpgenv create /tmp/gnupg"
+    echo -e "       gpgenv show"
     echo -e "       gpgenv backup /media/secret-store/gnupg-\$(date  +%Y-%m-%d).tgz"
     echo -e "       gpgenv restore /media/secret-store/gnupg-$(date  +%Y-%m-%d).tgz"
     echo
 }
-
 
 ################################################################################
 # Swith gpg environment safely
@@ -55,6 +56,27 @@ function gpgenv_switch {
 
     export GNUPGHOME="${NEW_HOME}"
     echo "new GNUPGHOME=${GNUPGHOME}"
+}
+
+################################################################################
+# Create a new gpg environment
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function gpgenv_create {
+    local TARGET="${1:-$(mktemp -d "/tmp/gnupg-XXXXX")}"
+    [[ -d "${TARGET}" ]] || {
+        echo "Destination directory already exists."
+        echo "Try to use it with:"
+        echo "    gpgenv use ${TARGET}"
+        return 1
+    }
+
+    gpgenv_switch "${TARGET}"
 }
 
 ################################################################################
@@ -91,7 +113,7 @@ function gpgenv_backup {
 
     $(cd "${SRC}" && tar -czf "${TARGET}" .)
     echo "Created backup in ${TARGET}"
-    echo "To activate it, use"
+    echo "To restore it, use"
     echo "    gpgenv restore ${TARGET}"
 }
 
@@ -123,7 +145,7 @@ function gpgenv_restore {
 
     echo "Restored backup in ${DEST}"
     echo "To activate it, use"
-    echo "    gpgenv ${DEST}"
+    echo "    gpgenv use ${DEST}"
 }
 
 ################################################################################
@@ -139,8 +161,12 @@ function gpgenv {
     local COMMAND="${1:-}"
 
     case "$COMMAND" in
-        env )
+        env|show )
             echo "Current GNUPGHOME=${GNUPGHOME}"
+            ;;
+        create )
+            shift
+            gpgenv_create "$@"
             ;;
         backup )
             shift
@@ -150,11 +176,16 @@ function gpgenv {
             shift
             gpgenv_restore "$@"
             ;;
+        use )
+            shift
+            gpgenv_switch "$@"
+            ;;
         help )
             gpgenv_help
             ;;
         * )
-            gpgenv_switch "$COMMAND"
+            gpgenv_help
+            echo "Current GNUPGHOME=${GNUPGHOME}"
             ;;
     esac
 }
