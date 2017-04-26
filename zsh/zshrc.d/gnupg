@@ -20,6 +20,7 @@ function gpgenv_help {
     echo -e "       gpgenv help"
     echo -e "       gpgenv use /tmp/gnupg"
     echo -e "       gpgenv use"
+    echo -e "       gpgenv cd"
     echo -e "       gpgenv create"
     echo -e "       gpgenv create /tmp/gnupg"
     echo -e "       gpgenv show"
@@ -179,6 +180,9 @@ function gpgenv {
         use )
             shift
             gpgenv_switch "$@"
+            ;;
+        cd )
+            cd "${GNUPGHOME:-$HOME/.gnupg}"
             ;;
         help )
             gpgenv_help
