@@ -24,6 +24,7 @@ Note: the **map leader** is `,`.
 * `<leader>m` call make
 
 * `<C-Space>` call onmifunc completion
+* `<leader>e` open/close a left panel with file explorer
 
 ## Commands
 

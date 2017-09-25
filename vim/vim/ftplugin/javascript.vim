@@ -41,14 +41,20 @@ let g:jsx_ext_required = 0
 "Use locally installed flow
 let s:local_flow = finddir('node_modules', '.;') . '/.bin/flow'
 if matchstr(s:local_flow, "^\/\\w") == ''
-    let s:local_flow= getcwd() . "/" . s:local_flow
+  let s:local_flow= getcwd() . "/" . s:local_flow
 endif
 if executable(s:local_flow)
   let g:flow#flowpath = s:local_flow
 endif
 
 " If flow binary was found, setup flow
-if filereadable(g:flow#flowpath)
+let s:activate_flow = filereadable(g:flow#flowpath)
+" if this is a gandi project, we want flow too.
+if matchstr(expand('%:p:h'), "Projects\/gandi\/") == 'Projects/gandi/'
+  let s:activate_flow = 1
+endif
+
+if s:activate_flow
   let g:flow#autoclose = 1
   let g:flow#enable = 1
   let g:flow#omnifunc = 1
