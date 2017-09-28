@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+
+# Update a git repository from origin
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+SCRIPT=git-update
+INFO="
+Pull and rebase main branch in a git repository
+"
+
+function usage
+{
+   echo
+   echo "$INFO"
+   echo
+   echo -e " \033[4mUsage:\033[0m $SCRIPT -r <origin> -b <master> ."
+   echo
+   echo "          Options :"
+   echo "              -h           display this help"
+   echo "              -p <branch>  branch to update"
+   echo "              -r <remote>  remote to use"
+   echo
+   echo -e " \033[4mExemples:\033[0m "
+   echo -e "       $SCRIPT"
+   echo -e "       $SCRIPT -r origin -b master ~/Projects/themouette/dotfiles"
+   echo
+
+   exit 255
+}
+
+
+# Read parameters
+o_branch=""
+o_remote=""
+while getopts "p:h" options; do
+   case $options in
+      b) o_branch=$OPTARG
+         ;;
+      r) o_remote=$OPTARG
+         ;;
+    h|?) usage
+         ;;
+      *) usage
+         ;;
+  esac
+done
+# remove read arguments
+shift $(( OPTIND - 1 ))
+
+
+
+update () {
+    declare BRANCH
+    declare REMOTE_NAME
+    declare DEFAULT_REMOTE_BRANCH
+    declare MAIN_BRANCH
+    declare DIRTY
+
+    # Parse remote name
+    REMOTE_NAME=${o_remote:-"origin"}
+
+    # Find the repository main branch
+    # Thanks to https://stackoverflow.com/a/42570510
+    if git symbolic-ref "refs/remotes/${REMOTE_NAME}/HEAD" &> /dev/null ;
+    then
+      DEFAULT_REMOTE_BRANCH=$(git symbolic-ref "refs/remotes/${REMOTE_NAME}/HEAD" | sed "s@^refs/remotes/${REMOTE_NAME}/@@")
+    else
+      echo "Unable to find remote main branch, will fallback on master"
+      DEFAULT_REMOTE_BRANCH="master"
+    fi
+
+    # Get current local branch
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+    # Get the "main" branch
+    MAIN_BRANCH=${o_branch:-$DEFAULT_REMOTE_BRANCH}
+
+    DIRTY=$(git status --porcelain | grep -v '^??'||: | wc -l)
+    [[ "0" = "${DIRTY}" ]] || git stash
+    [[ "$BRANCH" = "$MAIN_BRANCH" ]] || git checkout "$MAIN_BRANCH"
+    git fetch -p "$REMOTE_NAME"
+    git pull --rebase "$REMOTE_NAME" "$MAIN_BRANCH"
+    [[ "$BRANCH" = "$MAIN_BRANCH" ]] || git checkout "$BRANCH"
+    [[ "0" = "${DIRTY}" ]] || git stash pop
+}
+
+################################################################################
+# Program main function
+# Globals:
+#   None
+# Arguments:
+#   repositor(y|ies) to update
+# Returns
+#   None
+################################################################################
+function main {
+  # save current dir
+  CURRENT_DIR=$(pwd)
+  function finish {
+    cd "$CURRENT_DIR"
+  }
+
+  # store directories in an array
+  declare -a dirs=()
+  for dir in "$@"; do dirs=("${dirs[@]}" "${dir}"); done
+
+  # If there is no dir argument, then it is current path
+  if [[ ${#dirs[*]} -eq 0 ]] ; then dirs=("${CURRENT_DIR}"); fi
+
+  # Update those repositories
+  for dir in "${dirs[@]}"
+  do
+    if [[ ! -d "${dir}" ]] ; then
+      echo "Ignore ${dir} because it is not a directory"
+      continue
+    fi
+
+    trap finish EXIT
+    cd "${dir}"
+    if git rev-parse --is-inside-work-tree &> /dev/null ; then
+      echo "Update ${dir}"
+      update
+    else
+      echo "Ignore ${dir} because it is not a git repository"
+    fi
+
+    trap - EXIT
+    finish
+  done
+}
+
+main "$@"

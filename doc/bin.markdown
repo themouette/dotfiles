@@ -7,3 +7,5 @@ are linked in `/usr/local/bin/`
 ## Available commands
 
 - `backup`: type `backup -h` for further information.
+- `git-update`: Update git repository from remote. Type `git-update -h` for
+  further information.
