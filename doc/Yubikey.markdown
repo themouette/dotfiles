@@ -72,7 +72,12 @@ ykman oath list
 ```
 
 In case the card cannot be found, you need to activate CCID communication mode,
-just `ykman mode 6`.
+just `ykman mode u+o+c`.
+
+If this fails, check the status of pcsd service: `sudo systemctl status
+pcscd.service`, and if required, enable it: `sudo systemctl enable
+pcscd.service`.
+See [this issue](https://github.com/Yubico/yubioath-desktop/issues/172#issuecomment-321169040)
 
 ### Going further
 
