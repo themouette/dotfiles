@@ -2,5 +2,8 @@
 export NVM_DIR="/home/julien/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# From https://github.com/creationix/nvm#manual-upgrade
+alias upgrade_nvm="(cd \"$NVM_DIR\" ; git fetch origin ; git checkout \`git describe --abbrev=0 --tags --match \"v[0-9]*\" origin\`) && \. \"$NVM_DIR/nvm.sh\""
+
 # Add local npm binaries to path.
 export PATH="./node_modules/.bin:$PATH"
