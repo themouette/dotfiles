@@ -3,6 +3,10 @@ snippet bash "set a bash she bang" b
 
 # ${1:General description and goal}
 
+# Log all the outputs to syslog and preserve the standard output.
+# see https://urbanautomaton.com/blog/2014/09/09/redirecting-bash-script-output-to-syslog/
+#exec 1> >(logger -s -t $(basename \$0)) 2>&1
+
 set -o errexit
 set -o pipefail
 set -o nounset
