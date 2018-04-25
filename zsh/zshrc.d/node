@@ -1,6 +1,7 @@
 # register nvm
-export NVM_DIR="/home/julien/.nvm"
+export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # From https://github.com/creationix/nvm#manual-upgrade
 alias upgrade_nvm="(cd \"$NVM_DIR\" ; git fetch origin ; git checkout \`git describe --abbrev=0 --tags --match \"v[0-9]*\" origin\`) && \. \"$NVM_DIR/nvm.sh\""

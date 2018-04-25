@@ -1,1 +1,4 @@
-export PATH="$PATH:/home/julien/.gem/ruby/2.2.0/bin"
+command -v rbenv >/dev/null 2>&1 && {
+    eval "$(rbenv init -)" # Add rbenv shims to path
+    export PATH="$PATH:$HOME/.gem/ruby/2.5.1/bin"
+}
