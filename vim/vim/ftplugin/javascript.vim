@@ -7,13 +7,23 @@ set formatoptions+=c
 set formatoptions+=r
 set formatoptions+=o
 
-" set options for gandi projects
-" autocmd BufEnter ~/Projects/gandi/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
-" autocmd BufEnter ~/Projects/caliopen/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " Gandi got me into 2 spaces indent instead of 4
 setlocal tabstop=2 shiftwidth=2 softtabstop=2
 setlocal tabstop=2 shiftwidth=2 softtabstop=2
+
+augroup ftplugin_javascript_indent
+    " reset group autocommand
+    autocmd!
+
+    " set options for gandi projects
+    autocmd BufEnter */Projects/gandi/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd BufEnter */Projects/caliopen/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
+
+    " set options for datadog projects
+    autocmd BufEnter */Projects/datadog/* setlocal tabstop=4 shiftwidth=4 softtabstop=4
+    autocmd BufEnter */go/src/github.com/DataDog/* setlocal tabstop=4 shiftwidth=4 softtabstop=4
+augroup END
 
 " Use zi to switch folding
 setlocal nofoldenable
