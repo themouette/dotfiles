@@ -90,9 +90,8 @@ setlocal formatoptions+=r
 setlocal formatoptions+=o
 
 " code indent
-" Gandi got me into 2 spaces indent instead of 4
-setlocal tabstop=2 shiftwidth=2 softtabstop=2
-setlocal tabstop=2 shiftwidth=2 softtabstop=2
+setlocal tabstop=4 shiftwidth=4 softtabstop=4
+setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
 augroup ftplugin_javascript_indent
     " reset group autocommand
@@ -137,10 +136,10 @@ if s:has_node_module_exec('flow')
 endif
 
 " general configuration
-let g:flow#autoclose = 1
-let g:flow#omnifunc = 1
+let b:flow#autoclose = 1
+let b:flow#omnifunc = 1
 " disable by default
-let g:flow#enable = 0
+let b:flow#enable = 0
 
 " enable or not
 augroup ftplugin_javascript_flow
@@ -157,7 +156,7 @@ augroup END
 
 
 " Configure 'sbdchd/neoformat'
-let g:neoformat_verbose = 0
+let b:neoformat_verbose = 0
 
 " Override the default prettier bin if there is one installed
 if s:has_node_module_exec('prettier')
