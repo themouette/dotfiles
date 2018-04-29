@@ -60,6 +60,12 @@ Plugin 'glench/vim-jinja2-syntax'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" reload vimrc on change
+augroup vimrc_autoreload
+    autocmd!
+    autocmd BufWritePost .vimrc :so ~/.vimrc
+augroup END
+
 " Set title on X window
 set title
 
