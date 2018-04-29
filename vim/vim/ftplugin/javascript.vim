@@ -1,13 +1,95 @@
+" First, define some global functions
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Find local executable for a node_module.
+"
+" Arguments
+" * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
+"
+" Returns: {string} the fullpath to the command
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:find_local_node_modules_exec(module_cmd)
+    let cmd_path = finddir('node_modules', '.;') . '/.bin/' . a:module_cmd
+
+    " make sure this is an absolute path
+    if matchstr(cmd_path, "^\/\\w") == ''
+        let cmd_path = getcwd() . "/" . cmd_path
+    endif
+    " check it is executable
+    if executable(cmd_path)
+        return cmd_path
+    endif
+
+    return ""
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Check wether a module command exists or not in current project's
+" node_modules
+"
+" Arguments
+" * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
+"
+" Returns: {boolean}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:has_local_node_module_exec(module_cmd)
+    return strlen(s:find_local_node_modules_exec(a:module_cmd)) > 0
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Find the best matching executable from a node_module.
+" Always prefer local version of the package, and fallback on a global version
+"
+" Arguments
+" * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
+"
+" Returns: {string} the fullpath to the command
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:find_node_modules_exec(module_cmd)
+    let cmd_path = s:find_local_node_modules_exec(a:module_cmd)
+    " check it is executable
+    if strlen(cmd_path)
+        return cmd_path
+    endif
+
+    " attempt to find a globaly installed npm package matching the request
+    if !executable('npm')
+        return ""
+    endif
+
+    let cmd_path = system('npm bin -g')[:-2] . "/" . a:module_cmd
+    " check it is executable
+    if executable(cmd_path)
+        return cmd_path
+    endif
+
+    return ""
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Check wether a module command exists or not
+"
+" Arguments
+" * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
+"
+" Returns: {boolean}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:has_node_module_exec(module_cmd)
+    return strlen(s:find_node_modules_exec(a:module_cmd)) > 0
+endfunction
+
+
+
 " activate javscript autocompletion
 setlocal omnifunc=javascriptcomplete#CompleteJS
 
 " override default behavior
 " insert comment on new line
-set formatoptions+=c
-set formatoptions+=r
-set formatoptions+=o
+setlocal formatoptions+=c
+setlocal formatoptions+=r
+setlocal formatoptions+=o
 
-
+" code indent
 " Gandi got me into 2 spaces indent instead of 4
 setlocal tabstop=2 shiftwidth=2 softtabstop=2
 setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -21,7 +103,6 @@ augroup ftplugin_javascript_indent
     autocmd BufEnter */Projects/caliopen/* setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
     " set options for datadog projects
-    autocmd BufEnter */Projects/datadog/* setlocal tabstop=4 shiftwidth=4 softtabstop=4
     autocmd BufEnter */go/src/github.com/DataDog/* setlocal tabstop=4 shiftwidth=4 softtabstop=4
 augroup END
 
@@ -48,34 +129,54 @@ let g:jsx_ext_required = 0
 " Use flow
 " see https://github.com/flowtype/vim-flow
 
-"Use locally installed flow
-let s:local_flow = finddir('node_modules', '.;') . '/.bin/flow'
-if matchstr(s:local_flow, "^\/\\w") == ''
-  let s:local_flow= getcwd() . "/" . s:local_flow
-endif
-if executable(s:local_flow)
-  let g:flow#flowpath = s:local_flow
-endif
-
-" If flow binary was found, setup flow
-let s:activate_flow = filereadable(g:flow#flowpath)
-" if this is a gandi project, we want flow too.
-if matchstr(expand('%:p:h'), "Projects\/gandi\/") == 'Projects/gandi/'
-  let s:activate_flow = 1
-endif
-
-if s:activate_flow
-  let g:flow#autoclose = 1
-  let g:flow#enable = 1
-  let g:flow#omnifunc = 1
-  " Toggle flow checks
+if s:has_node_module_exec('flow')
+  " Use the best flow binary
+  let g:flow#flowpath = find_node_modules_exec('flow')
+  " Bind flow togle to F4
   nnoremap <buffer> <F4> :FlowToggle<CR>
-else
-  let g:flow#enable = 0
 endif
 
-" lint all curly braces to add spaces
-" Not sure this is correctly bound though
-" :%s:\$\@<!{\s*\([^}]\{-1,}\)\s*}:{ \1 }:<CR>
-" :%s:\[\s*\([^\]]\{-}\)\s*]:[\1]:gc
+" general configuration
+let g:flow#autoclose = 1
+let g:flow#omnifunc = 1
+" disable by default
+let g:flow#enable = 0
+
+" enable or not
+augroup ftplugin_javascript_flow
+    autocmd!
+    " enable different behaviors depending on the project
+    " - gandi
+    autocmd BufEnter */Projects/gandi/* let b:flow#enable = 1
+
+    " - default: if there is a local flow bin
+    if s:has_local_node_module_exec('flow')
+      autocmd BufEnter <buffer> let b:flow#enable = 1
+    endif
+augroup END
+
+
+" Configure 'sbdchd/neoformat'
+let g:neoformat_verbose = 0
+
+" Override the default prettier bin if there is one installed
+if s:has_node_module_exec('prettier')
+    let b:neoformat_javascript_prettier = {
+                \ 'exe': s:find_node_modules_exec('prettier'),
+                \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
+                \ 'stdin':1
+                \ }
+endif
+
+augroup ftplugin_javascript_fmt
+    autocmd!
+    " run formatter on save depending on the project
+    " - datadog
+    autocmd BufEnter */go/src/github.com/DataDog/* undojoin | Neoformat
+
+    " - default: if there is a local prettier bin
+    if s:has_local_node_module_exec('prettier')
+      autocmd BufWritePre <buffer> undojoin | Neoformat
+    endif
+augroup END
 

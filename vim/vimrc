@@ -33,7 +33,8 @@ Plugin 'mxw/vim-jsx'
 Plugin 'flowtype/vim-flow'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'cakebaker/scss-syntax.vim'
-Bundle 'reasonml-editor/vim-reason-plus'
+Plugin 'sbdchd/neoformat'
+Plugin 'reasonml-editor/vim-reason-plus'
 
 " Elixir
 Plugin 'elixir-lang/vim-elixir'
