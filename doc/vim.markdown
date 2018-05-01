@@ -26,6 +26,8 @@ Note: the **map leader** is `,`.
 * `<C-Space>` call onmifunc completion
 * `<leader>e` open/close a left panel with file explorer
 
+* `<leader>f` format current file with Neoformat
+
 ## Commands
 
 To add a new spell language, just run `set spelllang=fr`. This will

@@ -57,54 +57,23 @@ let g:flow#autoclose = 1
 let g:flow#omnifunc = 1
 
 if themouette#HasNodeModuleExec('flow')
-  " Use the best flow binary
-  let g:flow#flowpath = themouette#FindNodeModulesExec('flow')
-  " Bind flow toggle to F4
-  nnoremap <buffer> <F4> :FlowToggle<CR>
+    " Use the best flow binary
+    let g:flow#flowpath = themouette#FindNodeModulesExec('flow')
+
+    " Bind flow toggle to F4
+    nnoremap <buffer> <F4> :FlowToggle<CR>
+
+    augroup ftplugin_javascript_flow
+        autocmd!
+
+        " enable different behaviors depending on the project
+        if themouette#IsGandiProject()
+            " - gandi flow is defined as a single global instance
+            autocmd BufEnter <buffer> let g:flow#enable = 1
+
+        elseif themouette#HasLocalNodeModuleExec('flow')
+            " - default: if there is a local flow bin
+            autocmd BufEnter <buffer> let g:flow#enable = 1
+        endif
+    augroup END
 endif
-
-augroup ftplugin_javascript_flow
-    autocmd!
-
-    " enable different behaviors depending on the project
-    if themouette#IsGandiProject()
-        " - gandi flow is defined as a single global instance
-        autocmd BufEnter <buffer> let g:flow#enable = 1
-
-    elseif themouette#HasLocalNodeModuleExec('flow')
-        " - default: if there is a local flow bin
-        autocmd BufEnter <buffer> let g:flow#enable = 1
-    endif
-augroup END
-
-
-"******************************************************************************
-" Formatting
-" see https://github.com/sbdchd/neoformat
-"******************************************************************************
-
-let b:neoformat_verbose = 0
-
-" Override the default prettier bin if there is one installed
-if themouette#HasNodeModuleExec('prettier')
-    let b:neoformat_javascript_prettier = {
-                \ 'exe': themouette#FindNodeModulesExec('prettier'),
-                \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
-                \ 'stdin':1
-                \ }
-endif
-
-" DataDog only uses prettier BUT has some other formatters installed
-if themouette#IsDataDogProject()
-    let b:neoformat_enabled_javascript = ['prettier']
-endif
-
-augroup ftplugin_javascript_fmt
-    autocmd!
-    " run formatter on save depending on the project
-    if themouette#HasLocalNodeModuleExec('prettier')
-        " - default: if there is a local prettier bin
-      autocmd BufWritePre <buffer> undojoin | Neoformat
-    endif
-augroup END
-
