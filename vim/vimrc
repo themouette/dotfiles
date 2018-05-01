@@ -22,7 +22,7 @@ Plugin 'airblade/vim-gitgutter'
 " command t
 "Plugin 'git://git.wincent.com/command-t.git'
 " ctrlp.vim is a pure vimscript replacement for command-t
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlp.vim'
 
 " Install ultisnips.
 Plugin 'SirVer/ultisnips'
@@ -176,7 +176,7 @@ nmap <leader>2 :set tabstop=2<cr>:set shiftwidth=2<cr>:set softtabstop=2<cr>
 nmap <leader>4 :set tabstop=4<cr>:set shiftwidth=4<cr>:set softtabstop=4<cr>
 
 " sudo to write
-command W w !sudo tee % > /dev/null
+command! W w !sudo tee % > /dev/null
 
 " pull word under cursor into LHS of a substitute (for quick search and replace)
 nmap <leader>zs :%s/<C-r>=expand("<cword>")<CR>/
@@ -254,11 +254,6 @@ set formatoptions-=c formatoptions-=r formatoptions-=o
 let g:gist_clip_command     = 'pbcopy'
 let g:gist_detect_filetype  = 1
 let g:gist_post_private     = 1
-
-" ctrlp
-" Replaced ctrlp.vim with command-t
-"let g:ctrlp_map                 = '<leader>t'
-"let g:ctrlp_clear_cache_on_exit = 0
 
 " c++
 au BufNewFile,BufRead,BufEnter *.cpp,*.hpp set ft=cpp
