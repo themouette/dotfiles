@@ -35,13 +35,13 @@ let b:javascript_plugin_flow = 1
 " configure https://github.com/mxw/vim-jsx
 let b:jsx_ext_required = 0
 
-" use eslint to check syntax
-let g:syntastic_javascript_checkers = ['eslint']
-nmap <buffer> <C-l> :!eslint %<CR>
-" If available, use local eslint (thanks to
-" https://github.com/mtscout6/syntastic-local-eslint.vim)
-let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
-let g:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+"" use eslint to check syntax
+"let g:syntastic_javascript_checkers = ['eslint']
+"nmap <buffer> <C-l> :!eslint %<CR>
+"" If available, use local eslint (thanks to
+"" https://github.com/mtscout6/syntastic-local-eslint.vim)
+"let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
+"let g:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
 
 
 "******************************************************************************

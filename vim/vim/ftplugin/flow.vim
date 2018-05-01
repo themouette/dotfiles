@@ -1,2 +1,2 @@
 " disable exlint check
-let b:syntastic_javascript_checkers = []
+" let b:syntastic_javascript_checkers = []

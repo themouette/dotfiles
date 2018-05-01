@@ -28,6 +28,9 @@ Note: the **map leader** is `,`.
 
 * `<leader>f` format current file with Neoformat
 
+* `<C-k>` Move to previous error (ALE)
+* `<C-j>` Move to next error (ALE)
+
 ## Commands
 
 To add a new spell language, just run `set spelllang=fr`. This will
