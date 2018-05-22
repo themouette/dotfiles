@@ -1,0 +1,180 @@
+
+#################################################
+# gandi.redux-fetcher snippets
+#################################################
+
+snippet descFetch "gandi.redux-fetcher test file" b
+import { expect } from 'chai';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import {
+	mockFetcherMiddleware, assert${1:Get}CallMatch,
+} from 'gandi.redux-fetcher/dist/test';
+import {
+	assertMatchStart, assertMatchSuccess, assertMatchFailure,
+} from 'gandi.redux-resource/dist/test';
+// Test with logger?
+import { createAppLogger } from 'gandi.redux-logger';
+// Test notifications?
+import { notifyDanger } from 'gandi.react-alerts';
+import { assertAlertMatch } from 'gandi.react-alerts/dist/test';
+
+import `!p snip.rv = subject_name(snip)` from '`!p snip.rv = subject_relative_path(snip, path)`';
+
+
+describe('${2:`!p snip.rv = subject_fully_qualified_path(snip, path)`}', () => {
+	const createMockStore = (mockResponses, getState) => {
+		const middlewares = [thunk, mockFetcherMiddleware(mockResponses)];
+		return configureStore(middlewares)(getState);
+	};
+
+	${0}
+});
+endsnippet
+
+snippet itFetch "gandi.redux-fetcher middleware test case OK" b
+it('${1:should fetch}', () => {
+	const responses = [
+		[${2:200}, ${3:response}, { 'content-type': '${4:application/json}' }],
+	];
+
+	const getState = () => ({});
+	const store = createMockStore(responses, getState);
+
+	return store
+		.dispatch(${5:action}(${6}))
+		.then(
+			() => {
+				expect(store).to.have.dispatchedActions([
+					assertMatchStart(resource.${7:fetch}),
+					assertGetCallMatch('${8:url}'),
+					assertMatchSuccess(resource.$7),
+				]);
+			},
+			(err) => {
+				throw err;
+			}
+		);
+});
+endsnippet
+
+snippet itFetch "gandi.redux-fetcher middleware test case KO" b
+it('${1:should reject}', () => {
+	const responses = [
+		[${2:400}, ${3:\{ message: 'error' \}}, { 'content-type': '${4:application/json}' }],
+	];
+
+	const getState = () => ({});
+	const store = createMockStore(responses, getState);
+
+	return store
+		.dispatch(${5:action}(${6}))
+		.then(
+			() => {
+				throw new Error('This action should have been rejected');
+			},
+			(err) => {
+				expect(store).to.have.dispatchedActions([
+					assertMatchStart(resource.${7:fetch}),
+					assertGetCallMatch('${8:url}'),
+					assertMatchFailure(resource.$7),
+				]);
+			}
+		);
+});
+endsnippet
+
+snippet ftu "for translators use" w
+<for-translators-use>${1}</for-translators-use>${0}
+endsnippet
+
+
+snippet Route "React route (flow)" b
+/* @flow */
+import { compose, bindActionCreators } from 'redux';
+import { asyncConnect } from 'gandi.react-async-connect';
+import { withTranslator } from 'gandi.translate';
+import { withBreadcrumb } from 'gandi.react-admin-layout';
+
+import $1Presenter from './components/Presenter';
+
+
+type $1Props = {
+	translatorProps: GandiTranslatorProps,
+	params: { },
+};
+
+const mapStateToProps = (state: State, ownProps: $1Props) => {
+	const __ = ownProps.translatorProps.__;
+	return {
+		__,
+		theme: 'show',
+		backUrl: `/`,
+		h2: __('$2'),
+		$0
+	};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+}, dispatch);
+
+export default compose(
+	withBreadcrumb(({ __, params }) => ({
+		to: \`/\$\{params.id}\`,
+		title: __('${2}'),
+	})),
+	withTranslator({ propsNamespace: 'translatorProps' }),
+	asyncConnect(mapStateToProps, mapDispatchToProps)
+)(${1:`!p snip.rv = component_name(snip)`}Presenter);
+endsnippet
+
+snippet Presenter "React presenter" b
+/* @flow */
+import React, { Component } from 'react';
+import { SecondaryTemplate } from 'gandi.react-admin-layout';
+
+
+type $1Props = {
+	translatorProps: GandiTranslatorProps,
+	backUrl: string,
+	theme: string,
+	h2: string,
+};
+
+/**
+ * $1 component
+ */
+class ${1:`!p snip.rv = component_name(snip)`} extends Component {
+	static defaultProps = {};
+	props: $1Props;
+
+	decorateContent(...content: Array<ReactChildren>) {
+		return (
+			<SecondaryTemplate
+				h2={this.props.h2}
+				theme={this.props.theme}
+				backUrl={this.props.backUrl}
+				__={this.props.translatorProps.__}
+			>
+				{React.Children.toArray(content)}
+			</SecondaryTemplate>
+		);
+	}
+
+	/**
+	 * Render component
+	 * @return {ReactElement}
+	 */
+	render() {
+		return this.decorateContent(
+			${2:<p>Hello World</p>}$0
+		);
+	}
+}
+
+export default $1;
+endsnippet
+
+global !p
+from react_snippets_helpers import *
+endglobal

@@ -1,0 +1,83 @@
+################################################################################
+# Define some snippets for react and Jest
+################################################################################
+
+snippet test "Jest test case" !b
+test('${1}', () => {
+	${0}
+});
+endsnippet
+
+snippet it "Jest it" !b
+it('${1:should}', () => {
+	${0}
+});
+endsnippet
+
+snippet descr?i?b?e? "Jest describe" !b
+describe('${1}', () => {
+	${0}
+});
+endsnippet
+
+################################################################################
+# Enzyme
+################################################################################
+
+snippet enzyme "Jest and enzyme test case" b
+import React from 'react';
+import { ${1:mount} } from 'enzyme';
+
+import ${2:`!p snip.rv = component_name(snip)`} from '`!p snip.rv = subject_relative_path(snip, path)`';
+
+
+describe('<$2 />}', () => {
+	const $1Component = (props = {}) => $1(
+		<`!p snip.rv = component_name(snip)`
+			${0}{...props}
+		/>
+	);
+
+	it('should render', () => {
+		const wrapper = $1Component({});
+
+		expect(wrapper.exists()).toBe${3:Truthy}();
+	});
+});
+endsnippet
+
+snippet mountComponent "define a custom mountComponent function" b
+const ${1:mount}Component = (props = {}) => $1(
+	<`!p snip.rv = component_name(snip)`
+		${0}{...props}
+	/>
+);
+endsnippet
+
+snippet itMount "Enzyme and Jest mount test" b
+it('should render ${1:when}', () => {
+	const wrapper = ${2:mount}Component(${3:\{\}});
+
+	expect(wrapper.find('${4:div}')).to${5:HaveLength(${6})};
+});
+endsnippet
+
+snippet itRender "Enzyme and Jest render test" b
+it('should render ${1:when}', () => {
+	const wrapper = ${2:render}Component(${3:\{\}});
+
+	expect(wrapper.find('${4:div}')).to${5:HaveLength(${6})};
+});
+endsnippet
+
+snippet itShallow "Enzyme and Jest shallow render test" b
+it('should render ${1:when}', () => {
+	const wrapper = ${2:shallow}Component(${3:\{\}});
+
+	expect(wrapper.find('${4:div}')).to${5:HaveLength(${6})};
+});
+endsnippet
+
+global !p
+from react_snippets_helpers import *
+endglobal
