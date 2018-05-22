@@ -22,6 +22,7 @@ Note: the **map leader** is `,`.
 
 * `<leader>l` show/hide hidden chars
 * `<leader>m` call make
+* `<leader>d` show/hide ale details
 
 * `<C-Space>` call onmifunc completion
 * `<leader>e` open/close a left panel with file explorer

@@ -16,8 +16,9 @@ Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'sbdchd/neoformat'
+Plugin 'w0rp/ale'
 
 " command t
 "Plugin 'git://git.wincent.com/command-t.git'
@@ -33,7 +34,6 @@ Plugin 'mxw/vim-jsx'
 Plugin 'flowtype/vim-flow'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'sbdchd/neoformat'
 Plugin 'reasonml-editor/vim-reason-plus'
 
 " Elixir
