@@ -51,6 +51,7 @@
    logg = log --graph --decorate
    lol = log --graph --decorate --pretty=oneline --abbrev-commit
    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+   chekcout = checkout
 [user]
 	name = Julien Muetton
 	email = julien@muetton.me
