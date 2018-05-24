@@ -176,7 +176,10 @@ endfunction
 function! themouette#IsDataDogProject()
     if matchstr(expand('%:p'), "go\/src\/github.com\/DataDog\/") == 'go/src/github.com/DataDog/'
         return 1
-    else
-        return 0
     endif
+    if matchstr(expand('%:p'), "Projects\/datadog\/") == 'Projects/datadog/'
+        return 1
+    endif
+
+    return 0
 endfunction
