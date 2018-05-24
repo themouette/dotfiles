@@ -24,17 +24,17 @@ import React from 'react';
 import { expect } from 'chai';
 import { ${1:mount} } from 'enzyme';
 
-import `!p snip.rv = component_name(snip)` from '`!p snip.rv = subject_relative_path(snip, path)`';
+import `!p snip.rv = component_name(path)` from '`!p snip.rv = subject_relative_path(path)`';
 
 
-describe('${2:`!p snip.rv = subject_fully_qualified_path(snip, path)`}', () => {
+describe('${2:`!p snip.rv = subject_fully_qualified_path(path)`}', () => {
 	${0}
 });
 endsnippet
 
 snippet itMount "Enzyme and Mocha mount test" b
 it('${1:should render}', () => {
-	const wrapper = mount(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
+	const wrapper = mount(<${2:`!p snip.rv = component_name(path)`} ${3:props} />);
 
 	expect(wrapper).to.${4:be.present()};
 });
@@ -42,7 +42,7 @@ endsnippet
 
 snippet itRender "Enzyme and Mocha render test" b
 it('${1:should render}', () => {
-	const wrapper = render(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
+	const wrapper = render(<${2:`!p snip.rv = component_name(path)`} ${3:props} />);
 
 	expect(wrapper).to.${4:be.present()};
 });
@@ -50,7 +50,7 @@ endsnippet
 
 snippet itShallow "Enzyme and Mocha shallow render test" b
 it('${1:should render}', () => {
-	const wrapper = shallow(<${2:`!p snip.rv = component_name(snip)`} ${3:props} />);
+	const wrapper = shallow(<${2:`!p snip.rv = component_name(path)`} ${3:props} />);
 
 	expect(wrapper).to.${4:be.present()};
 });

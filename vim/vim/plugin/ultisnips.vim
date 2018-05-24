@@ -26,6 +26,7 @@ function! SetupUltiSnipsFrontend()
         return
     endif
 
+
     if themouette#HasLocalNodeModuleExec('jest')
         call add(b:UltiSnipsSnippetDirectories, "UltiSnipsPlugins/jest")
     endif
@@ -35,7 +36,7 @@ function! SetupUltiSnipsFrontend()
     endif
 endfunction
 
-augroup themouette_plugins_neoformat
+augroup themouette_plugins_ultisnips
     autocmd!
 
     autocmd FileType * call SetupUltiSnipsFrontend()

@@ -14,8 +14,32 @@ it('${1:should}', () => {
 });
 endsnippet
 
-snippet descr?i?b?e? "Jest describe" !b
+snippet "descr?i?b?e?" "Jest describe" !rb
 describe('${1}', () => {
+	${0}
+});
+endsnippet
+
+snippet "beforeEa?c?h?" "Jest beforeEach" !rb
+beforeEach(() => {
+	${0}
+});
+endsnippet
+
+snippet "afterEa?c?h?" "Jest afterEach" !rb
+afterEach(() => {
+	${0}
+});
+endsnippet
+
+snippet "beforeAl?l?" "Jest beforeAll" !rb
+beforeAll(() => {
+	${0}
+});
+endsnippet
+
+snippet "afterAl?l?" "Jest afterAll" !rb
+afterAll(() => {
 	${0}
 });
 endsnippet
@@ -28,12 +52,12 @@ snippet enzyme "Jest and enzyme test case" b
 import React from 'react';
 import { ${1:mount} } from 'enzyme';
 
-import ${2:`!p snip.rv = component_name(snip)`} from '`!p snip.rv = subject_relative_path(snip, path)`';
+import ${2:`!p snip.rv = component_name(path)`} from '`!p snip.rv = subject_relative_path(path)`';
 
 
 describe('<$2 />}', () => {
 	const $1Component = (props = {}) => $1(
-		<`!p snip.rv = component_name(snip)`
+		<$2
 			${0}{...props}
 		/>
 	);
@@ -48,7 +72,7 @@ endsnippet
 
 snippet mountComponent "define a custom mountComponent function" b
 const ${1:mount}Component = (props = {}) => $1(
-	<`!p snip.rv = component_name(snip)`
+	<`!p snip.rv = component_name(path)`
 		${0}{...props}
 	/>
 );

@@ -19,10 +19,10 @@ import { createAppLogger } from 'gandi.redux-logger';
 import { notifyDanger } from 'gandi.react-alerts';
 import { assertAlertMatch } from 'gandi.react-alerts/dist/test';
 
-import `!p snip.rv = subject_name(snip)` from '`!p snip.rv = subject_relative_path(snip, path)`';
+import `!p snip.rv = subject_name(snip)` from '`!p snip.rv = subject_relative_path(path)`';
 
 
-describe('${2:`!p snip.rv = subject_fully_qualified_path(snip, path)`}', () => {
+describe('${2:`!p snip.rv = subject_fully_qualified_path(path)`}', () => {
 	const createMockStore = (mockResponses, getState) => {
 		const middlewares = [thunk, mockFetcherMiddleware(mockResponses)];
 		return configureStore(middlewares)(getState);
