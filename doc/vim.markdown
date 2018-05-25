@@ -27,7 +27,7 @@ Note: the **map leader** is `,`.
 * `<C-Space>` call onmifunc completion
 * `<leader>e` open/close a left panel with file explorer in current file
   directory
-* ``<leader>``` open/close a left panel with file explorer in cwd
+* ``<leader>` `` open/close a left panel with file explorer in cwd
 
 * `<leader>f` format current file with Neoformat
 
