@@ -9,7 +9,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ##
 command -v pacman >/dev/null 2>&1 && {
     # In case this is an archlinux installation
-    sudo pacman -S zsh ack tmux htop wget curl vim tree elinks
+    sudo pacman -S zsh ack tmux htop wget curl vim tree elinks fzf highlight
 }
 command -v apt-get >/dev/null 2>&1 && {
     # In case this is a debian installation
