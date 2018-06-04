@@ -2,6 +2,10 @@ if [[ -d "/usr/share/fzf/" ]]; then
     # Enable fzf
     source /usr/share/fzf/completion.zsh
     source /usr/share/fzf/key-bindings.zsh
+elif [[ -d "/usr/local/opt/fzf" ]]; then
+    # Enable fzf
+    source /usr/local/opt/fzf/shell/completion.zsh
+    source /usr/local/opt/fzf/shell/key-bindings.zsh
 fi
 
 # When selecting files with fzf, we show file content with syntax highlighting,

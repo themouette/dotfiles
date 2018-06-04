@@ -1,0 +1,130 @@
+# vim: set ft=sh :
+# taken from https://github.com/DataDog/devops/wiki/Development-Environment#initial-setup
+
+export HOMEBREW_NO_INSECURE_REDIRECT=1
+export HOMEBREW_CASK_OPTS=--require-sha
+
+# Asked by https://github.com/DataDog/devops/wiki/Frontend-Development-Environment
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
+export GOPATH="${HOME}/go"
+export DATADOG_ROOT="${HOME}/Projects/datadog"
+
+export PATH="$DATADOG_ROOT/devtools/bin:$PATH"
+export VAGRANT_CWD="${DATADOG_ROOT}"
+
+
+################################################################################
+# return datadog apikey
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function ddkey {
+  case ${1:-staging} in
+      prod )
+          echo "$DD_API_KEY"
+          ;;
+      demo )
+          echo "$DD_API_KEY_DEMO"
+          ;;
+      stage|staging )
+          echo "$DD_API_KEY_STAGING"
+          ;;
+      *)
+          echo "unkown environment ${1}"
+          ;;
+  esac
+}
+
+################################################################################
+# return contextualized datadog application key
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function ddapp {
+  case ${1:-staging} in
+      prod )
+          echo "$DD_APP_KEY"
+          ;;
+      demo )
+          echo "$DD_APP_KEY_DEMO"
+          ;;
+      stage|staging )
+          echo "$DD_APP_KEY_STAGING"
+          ;;
+      *)
+          echo "unkown environment ${1}"
+          ;;
+  esac
+}
+
+################################################################################
+# returns the datadog api url params for current context
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function ddparams {
+    app="${1:-staging}"
+    echo "app_key=$(ddkey $app)"'&application_key='"$(ddapp $app)"
+}
+
+################################################################################
+# pr description
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function pr {
+    cd $DATADOG_ROOT/dogweb
+    if [ -z "$1" ]
+    then
+        branch=$(git rev-parse --abbrev-ref HEAD)
+    else
+        branch=$1
+    fi
+    open "https://github.com/DataDog/dogweb/compare/$branch?expand=1"
+}
+
+################################################################################
+# cd in datadog context
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function cdd {
+  cd "$DATADOG_ROOT"
+
+  for var in "$@"
+  do
+      cd "$var"
+  done
+}
+
+
+alias vaup="cdd; vagrant up --provider=virtualbox; cd -"
+alias vadown='cdd; vagrant suspend; cd -'
+alias vakill='killall VBoxHeadless'
+
+alias cddd='cdd dogweb'
+alias cdds='cdd dogweb/static'
+alias cddjs='cdd dogweb/static/javascript/datadog'
+
+alias bs='branches-status'
