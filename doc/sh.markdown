@@ -10,6 +10,19 @@ using [this technique](http://askubuntu.com/a/594147).
 
 Then agent still needs to be activated.
 
+## Common vars
+
+- `$IS_MACOS` will be `"true"` when on MacOs
+- `$IS_LINUX` will be `"true"` when on Linux
+
+``` sh
+if [[ "$IS_MACOS" = "true" ]] ; then
+    # Do something specific to macos
+elif [[ "$IS_LINUX" = "true" ]] ; then
+    # Do something specific to linux
+fi
+```
+
 ## Commands
 
 * `fonctions` List available functions. Yes, this is in french.

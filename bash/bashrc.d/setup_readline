@@ -1,0 +1,4 @@
+# Setup backward search on up/down arrow
+# Thanks to https://askubuntu.com/a/475614
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'

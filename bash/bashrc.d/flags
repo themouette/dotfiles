@@ -1,0 +1,4 @@
+# Required by `setup_readline`
+# See https://doc.ubuntu-fr.org/terminal?&#pour_completer_les_commandes_a_partir_de_l_historique
+shopt -s histappend
+PROMPT_COMMAND='history -a'

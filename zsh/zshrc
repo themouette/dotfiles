@@ -55,23 +55,13 @@ plugins=(git node npm pip tmux venv pyenv)
 export PATH="$HOME/.local/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
+# Include all the common configuration
+source $HOME/.shrc
+
 source $ZSH/oh-my-zsh.sh
-for file in $HOME/.shrc.d/*; do
-    source "$file"
-done
 for file in $HOME/.zshrc.d/*; do
     source "$file"
 done
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
-fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -87,3 +77,4 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+

@@ -1,0 +1,9 @@
+# Path to home
+export HOME="${HOME:-"/home/julien"}"
+
+# Include all the common configuration
+source $HOME/.shrc
+
+for file in $HOME/.bashrc.d/*; do
+    source "$file"
+done

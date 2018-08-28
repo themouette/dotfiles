@@ -22,7 +22,14 @@ command -v apt-get >/dev/null 2>&1 && {
 ##
 
 # Install sh commons
+rm -rf ~/.shrc ~/.shrc.d > /dev/null 2>&1
+ln -s ${DIR}/sh/shrc ~/.shrc
 ln -s ${DIR}/sh/shrc.d ~/.shrc.d
+
+# Install bash configuration
+rm -rf ~/.bashrc ~/.bashrc.d > /dev/null 2>&1
+ln -s ${DIR}/bash/bashrc ~/.bashrc
+ln -s ${DIR}/bash/bashrc.d ~/.bashrc.d
 
 ##
 # zsh configuration
