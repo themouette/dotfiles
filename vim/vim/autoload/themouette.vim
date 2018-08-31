@@ -6,12 +6,31 @@
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Check wether a node module is locally installed or not
+"
+" Arguments
+" * module_name: the module to look for (i.e. 'express', 'react'...)
+"
+" Return: {boolean}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! themouette#HasLocalNodeModule(module_name)
+    let module_name = finddir('node_modules', '.;') . '/' . a:module_name
+
+    " make sure this is an absolute path
+    if matchstr(module_name, "^\/\\w") == ''
+        let module_name = getcwd() . "/" . module_name
+    endif
+
+    return isdirectory(module_name)
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Find local executable for a node_module.
 "
 " Arguments
 " * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
 "
-" Returng: {string} the fullpath to the command
+" Return: {string} the fullpath to the command
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#FindLocalNodeModulesExec(module_cmd)
     let cmd_path = finddir('node_modules', '.;') . '/.bin/' . a:module_cmd
@@ -35,7 +54,7 @@ endfunction
 " Arguments
 " * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
 "
-" Returng: {boolean}
+" Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#HasLocalNodeModuleExec(module_cmd)
     return strlen(themouette#FindLocalNodeModulesExec(a:module_cmd)) > 0
@@ -48,7 +67,7 @@ endfunction
 " Arguments
 " * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
 "
-" Returng: {string} the fullpath to the command
+" Return: {string} the fullpath to the command
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#FindNodeModulesExec(module_cmd)
     let cmd_path = themouette#FindLocalNodeModulesExec(a:module_cmd)
@@ -77,7 +96,7 @@ endfunction
 " Arguments
 " * module_cmd: the executable script to look for (i.e. 'prettier', 'flow'...)
 "
-" Returng: {boolean}
+" Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#HasNodeModuleExec(module_cmd)
     return strlen(themouette#FindNodeModulesExec(a:module_cmd)) > 0
@@ -95,7 +114,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {string}
+" Return: {string}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#GandiProjectsRegExp()
     return "*/Projects/gandi/*";
@@ -106,7 +125,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {boolean}
+" Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#IsGandiProject()
     if matchstr(expand('%:p'), "Projects\/gandi\/") == 'Projects/gandi/'
@@ -121,7 +140,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {string}
+" Return: {string}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#CaliopenProjectsRegExp()
     return "*/Projects/caliopen/*";
@@ -132,7 +151,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {boolean}
+" Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#IsCaliopenProject()
     if matchstr(expand('%:p'), "Projects\/caliopen\/") == 'Projects/caliopen/'
@@ -148,7 +167,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {boolean}
+" Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#IsGandiOrCaliopenProject()
     return themouette#IsGandiProject() || themouette#IsCaliopenProject()
@@ -160,7 +179,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {string}
+" Return: {string}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#DataDogProjectsRegExp()
     return "*/go/src/github.com/DataDog/*";
@@ -171,7 +190,7 @@ endfunction
 "
 " Arguments: N/A
 "
-" Returng: {boolean}
+" Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#IsDataDogProject()
     if matchstr(expand('%:p'), "go\/src\/github.com\/DataDog\/") == 'go/src/github.com/DataDog/'
