@@ -24,23 +24,27 @@ Plugin 'w0rp/ale'
 "Plugin 'git://git.wincent.com/command-t.git'
 " ctrlp.vim is a pure vimscript replacement for command-t
 Plugin 'ctrlp.vim'
+" basicly type "-" in a buffer to go up a directory
+Plugin 'tpope/vim-vinegar'
 
 " Install ultisnips.
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'flowtype/vim-flow'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'reasonml-editor/vim-reason-plus'
-
-" Elixir
-Plugin 'elixir-lang/vim-elixir'
-
-" Jinja2
-Plugin 'glench/vim-jinja2-syntax'
+" Install language syntaxes
+Plugin 'sheerun/vim-polyglot'
+" Plugin 'pangloss/vim-javascript'
+" Plugin 'mxw/vim-jsx'
+" Plugin 'flowtype/vim-flow'
+" Plugin 'mustache/vim-mustache-handlebars'
+" Plugin 'cakebaker/scss-syntax.vim'
+" Plugin 'reasonml-editor/vim-reason-plus'
+"
+" " Elixir
+" Plugin 'elixir-lang/vim-elixir'
+"
+" " Jinja2
+" Plugin 'glench/vim-jinja2-syntax'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
