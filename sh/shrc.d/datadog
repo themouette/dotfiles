@@ -127,4 +127,5 @@ alias cddd='cdd dogweb'
 alias cdds='cdd dogweb/static'
 alias cddjs='cdd dogweb/static/javascript/datadog'
 
-alias bs='branches-status'
+alias bs='branches-status -u'
+alias bsu='branches-status'
