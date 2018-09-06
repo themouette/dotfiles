@@ -9,3 +9,5 @@ let g:ctrlp_root_markers = ['package.json', 'setup.py']
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn)|node_modules|DS_Store)$'
 
+" The maximum number of files to scan, set to 0 for no limit
+let g:ctrlp_max_files = 0
