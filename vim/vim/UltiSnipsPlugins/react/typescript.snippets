@@ -1,0 +1,49 @@
+snippet Component "React component (Typescript)" b
+import * as React from 'react';
+
+interface $1Props {
+	/**  */
+	name?: string;
+};
+interface $1State {
+	/**  */
+	name?: string;
+};
+
+/**
+ * $1 component
+ */
+export class ${1:`!p snip.rv = component_name(path)`} extends React.Component<$1Props, $1State> {
+	static defaultProps = {};
+
+	render() {
+		return (
+			${2:<p>Hello World</p>}$0
+		);
+	}
+}
+endsnippet
+
+snippet "inte?r?f?a?c?e?" "description" !r
+interface ${1} {
+	/** $0 */
+	${2: name}: ${3: string};
+}
+endsnippet
+snippet "einte?r?f?a?c?e?" "description" !r
+export interface ${1} {
+	/** $0 */
+	${2: name}: ${3: string};
+}
+endsnippet
+
+snippet tsldnl "disable tslint for next line" b
+// tslint:disable-next-line${1::rule}
+endsnippet
+snippet tsldl "disable tslint for this line"
+// tslint:disable-line${1::rule}
+endsnippet
+
+global !p
+from react_snippets_helpers import *
+endglobal

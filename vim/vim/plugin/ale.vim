@@ -17,3 +17,8 @@ let g:ale_sign_warning = '⚠'
 augroup ale_auto_close_loclist
     autocmd!
 augroup END
+
+" Use tslint to lint tsx files
+" https://github.com/w0rp/ale/issues/1662
+let g:ale_linter_aliases = {'typescriptreact': 'typescript'}
+let g:ale_linters = { 'typescript': ['tsserver'] }
