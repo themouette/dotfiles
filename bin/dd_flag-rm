@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# This script open flags for all the 
+
+# Log all the outputs to syslog and preserve the standard output.
+# see https://urbanautomaton.com/blog/2014/09/09/redirecting-bash-script-output-to-syslog/
+#exec 1> >(logger -s -t $(basename $0)) 2>&1
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+################################################################################
+# Program main function
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function main {
+    flag_name="${1:-}"
+    if [[ -z "${flag_name}" ]] ; then
+        echo "You must provide a flag name"
+        exit 1
+    fi
+
+    if [[ -z "${DATADOG_ROOT}" ]] ; then
+        echo "\$DATADOG_ROOT is not configured..."
+        exit 1
+    fi
+    cd "${DATADOG_ROOT}/consul-config"
+
+    rm $(ls datadog | sed -e "s:.*:datadog/&/features/${flag_name}:")
+}
+
+main $@
+
