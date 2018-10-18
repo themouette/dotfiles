@@ -34,7 +34,7 @@ function main {
     fi
     cd "${DATADOG_ROOT}/consul-config"
 
-    rm $(ls datadog | sed -e "s:.*:datadog/&/features/${flag_name}:")
+    rm $(ls datadog | grep -v 'fitz' | sed -e "s:.*:datadog/&/features/${flag_name}:")
 }
 
 main $@

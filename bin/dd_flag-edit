@@ -34,7 +34,7 @@ function main {
     fi
     cd "${DATADOG_ROOT}/consul-config"
 
-    files=$(ls datadog | sed -e "s:.*:datadog/&/features/${flag_name}:")
+    files=$(ls datadog | grep -v 'fitz' | sed -e "s:.*:datadog/&/features/${flag_name}:")
     description=''
     for file in $files ; do
         if [[ ! -f "${file}" ]] ; then
