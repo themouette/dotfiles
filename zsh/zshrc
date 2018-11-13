@@ -58,10 +58,10 @@ export PATH="$HOME/.local/bin:$PATH"
 # Include all the common configuration
 source $HOME/.shrc
 
-source $ZSH/oh-my-zsh.sh
 for file in $HOME/.zshrc.d/*; do
     source "$file"
 done
+source $ZSH/oh-my-zsh.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
