@@ -8,3 +8,11 @@ alias upgrade_nvm="(cd \"$NVM_DIR\" ; git fetch origin ; git checkout \`git desc
 
 # Add local npm binaries to path.
 export PATH="./node_modules/.bin:$PATH"
+
+# Use Yarn installed with curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+[ -d "$HOME/.config/yarn/global/node_modules/.bin" ] && export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+[ -d "$HOME/.yarn/bin" ] && export PATH="$HOME/.yarn/bin:$PATH"
+
+# increase node memory
+export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=2048"
+
