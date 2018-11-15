@@ -55,13 +55,18 @@ plugins=(git node npm pip tmux venv pyenv)
 export PATH="$HOME/.local/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
+for file in $HOME/.zshrc-pre.d/*; do
+    source "$file"
+done
+
+source $ZSH/oh-my-zsh.sh
+
 # Include all the common configuration
 source $HOME/.shrc
 
 for file in $HOME/.zshrc.d/*; do
     source "$file"
 done
-source $ZSH/oh-my-zsh.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"

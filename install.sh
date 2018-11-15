@@ -27,9 +27,10 @@ ln -s ${DIR}/sh/shrc ~/.shrc
 ln -s ${DIR}/sh/shrc.d ~/.shrc.d
 
 # Install bash configuration
-rm -rf ~/.bashrc ~/.bashrc.d > /dev/null 2>&1
+rm -rf ~/.bashrc ~/.bashrc.d ~/.bashrc-pre.d > /dev/null 2>&1
 ln -s ${DIR}/bash/bashrc ~/.bashrc
 ln -s ${DIR}/bash/bashrc.d ~/.bashrc.d
+ln -s ${DIR}/bash/bashrc.d ~/.bashrc-pre.d
 
 ##
 # zsh configuration
@@ -38,9 +39,10 @@ ln -s ${DIR}/bash/bashrc.d ~/.bashrc.d
 # Install oh-my-zsh
 [[ -d ~/.oh-my-zsh ]] || curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 # Install zsh configuration
-rm -rf ~/.zshrc ~/.zshrc.d ~/.zsh-custom > /dev/null 2>&1
+rm -rf ~/.zshrc ~/.zshrc.d ~/.zsh-custom ~/.zshrc-pre.d > /dev/null 2>&1
 ln -s ${DIR}/zsh/zshrc ~/.zshrc
 ln -s ${DIR}/zsh/zshrc.d ~/.zshrc.d
+ln -s ${DIR}/zsh/zshrc.d ~/.zshrc-pre.d
 ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
 
 
