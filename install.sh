@@ -30,7 +30,7 @@ ln -s ${DIR}/sh/shrc.d ~/.shrc.d
 rm -rf ~/.bashrc ~/.bashrc.d ~/.bashrc-pre.d > /dev/null 2>&1
 ln -s ${DIR}/bash/bashrc ~/.bashrc
 ln -s ${DIR}/bash/bashrc.d ~/.bashrc.d
-ln -s ${DIR}/bash/bashrc.d ~/.bashrc-pre.d
+ln -s ${DIR}/bash/bashrc-pre.d ~/.bashrc-pre.d
 
 ##
 # zsh configuration
@@ -42,7 +42,7 @@ ln -s ${DIR}/bash/bashrc.d ~/.bashrc-pre.d
 rm -rf ~/.zshrc ~/.zshrc.d ~/.zsh-custom ~/.zshrc-pre.d > /dev/null 2>&1
 ln -s ${DIR}/zsh/zshrc ~/.zshrc
 ln -s ${DIR}/zsh/zshrc.d ~/.zshrc.d
-ln -s ${DIR}/zsh/zshrc.d ~/.zshrc-pre.d
+ln -s ${DIR}/zsh/zshrc-pre.d ~/.zshrc-pre.d
 ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
 
 
