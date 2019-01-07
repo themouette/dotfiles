@@ -118,6 +118,41 @@ function cdd {
   done
 }
 
+################################################################################
+# write ts stats for given path
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function ts_stats {
+  project=${1:-$DATADOG_ROOT/dogweb/static/javascript/datadog}
+  light=${2:-''}
+
+  ts_or_tsx="$(find $project -name '*.ts' -or -name '*.tsx' |wc -l)"
+  js_or_jsx="$(find $project -name '*.js' -or -name '*.jsx' |wc -l)"
+  less="$(find $project -name '*.less' |wc -l)"
+  markdown="$(find $project -name '*.markdown' -or -name '*.md' |wc -l)"
+  jest_snapshots="$(find $project -name '*.snap' |wc -l)"
+  total="$(find $project -type file |wc -l)"
+
+  if [[ -n $light ]]
+  then
+      echo "migration to ts: $(bc<<<"scale=2;${ts_or_tsx}/(${js_or_jsx}+${ts_or_tsx})*100") %"
+      return
+  fi
+  echo "tsx?: \t\t${ts_or_tsx}"
+  echo "jsx?: \t\t${js_or_jsx}"
+  echo "less: \t\t${less}"
+  echo "markdown: \t${markdown}"
+  echo "jest snapshots: ${jest_snapshots}"
+  echo "======================"
+  echo "total files: \t${total}"
+  echo "migration to ts: $(bc<<<"scale=2;${ts_or_tsx}/(${js_or_jsx}+${ts_or_tsx})*100") %"
+}
+
 
 alias vaup="cdd; vagrant up --provider=virtualbox; cd -"
 alias vadown='cdd; vagrant suspend; cd -'
