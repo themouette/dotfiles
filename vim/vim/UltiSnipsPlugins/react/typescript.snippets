@@ -1,9 +1,13 @@
+snippet ir "Import React" b
+import * as React from 'react';
+endsnippet
+
 snippet Component "React component (Typescript)" b
 import * as React from 'react';
 
 interface $1Props {
-	/**  */
-	name?: string;
+	/** Add an extra className to $1 wrapper */
+	className?: string;
 };
 interface $1State {
 	/**  */
@@ -25,15 +29,21 @@ export class ${1:`!p snip.rv = component_name(path)`} extends React.Component<$1
 endsnippet
 
 snippet "inte?r?f?a?c?e?" "description" !r
-interface ${1} {
-	/** $0 */
-	${2: name}: ${3: string};
+${1:export }interface ${2} {
+	/** ${3:Add an extra className to component wrapper} */
+	${4:className?}: ${5:string};
 }
+$0
 endsnippet
-snippet "einte?r?f?a?c?e?" "description" !r
-export interface ${1} {
-	/** $0 */
-	${2: name}: ${3: string};
+
+snippet SFC "create a react SFC"
+$2interface $1Props {
+	/** Add an extra className to $1 wrapper */
+	className?: string;
+}
+
+${2:export }const ${1:`!p snip.rv = component_name(path)`}: React.SFC<$1Props> = (props) => {
+	return ${3:<div className={props.className}>Hello World</div>};
 }
 endsnippet
 
