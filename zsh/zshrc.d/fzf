@@ -14,5 +14,5 @@ fi
 # We only load the first 200 lines of the file which enables fast previews
 # of large text files.
 # Requires highlight and tree: pacman -S highlight tree
-export FZF_DEFAULT_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null ||
+export FZF_DEFAULT_OPTS="--preview '(highlight -O ansi -l {} || coderay {} ||
 cat {} || tree -C {}) 2> /dev/null | head -200'"
