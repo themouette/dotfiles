@@ -6,7 +6,7 @@ set shell=/bin/zsh            " Use zsh as shell
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -23,7 +23,10 @@ Plugin 'w0rp/ale'
 " command t
 "Plugin 'git://git.wincent.com/command-t.git'
 " ctrlp.vim is a pure vimscript replacement for command-t
-Plugin 'ctrlp.vim'
+"Plugin 'ctrlp.vim'
+" Fzf is a real fast fuzzy finder
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 " basicly type "-" in a buffer to go up a directory
 Plugin 'tpope/vim-vinegar'
 
