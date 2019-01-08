@@ -1,3 +1,8 @@
+" WARNING: This file is not used anymore since I moved away from Neoformat in
+" favor of ale.
+" Ale does both auto format AND syntax checker.
+finish
+
 "******************************************************************************
 " Configure Neoformat
 " see https://github.com/sbdchd/neoformat

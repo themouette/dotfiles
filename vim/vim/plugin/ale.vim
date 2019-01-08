@@ -39,16 +39,51 @@ function! RegisterMyAleSetup()
     "
     " autocmd ale_buffer_autocmd BufWritePre  <buffer>
     "            | :echom 'BufWritePre '.expand('<amatch>')."--".bufnr('%')
+    if &filetype =~# 'javascript' ||
+                \ &filetype =~# 'typescript' ||
+                \ &filetype =~# 'css' ||
+                \ &filetype =~# 'scss' ||
+                \ &filetype =~# 'less' ||
+                \ &filetype =~# 'json' ||
+                \ &filetype =~# 'html' ||
+                \ &filetype =~# 'yaml' ||
+                \ &filetype =~# 'markdown'
+
+        " Setup prettier config as soon as the module is available
+        if themouette#HasNodeModuleExec('prettier')
+            " set prettier executable
+            let b:javascript_prettier_executable = themouette#FindNodeModulesExec('prettier')
+        endif
+
+        " Custom setup for datadog project
+        if themouette#IsDataDogProject()
+            " Explicitely use prettier only as datadog has some unused
+            " linter configs at root level and it triggers automatically
+            let b:ale_fixers = ['prettier']
+            " Force local configuration file to be able to open file outside of
+            " `statics` dir.
+            let b:javascript_prettier_options = '--config ~/Projects/datadog/dogweb/static/prettier.config.js'
+            " Run formatter on save
+            let b:ale_fix_on_save = 1
+
+        " run formatter on save if there is a local prettier bin
+        elseif themouette#HasLocalNodeModuleExec('prettier')
+            let b:ale_fix_on_save = 1
+        endif
+
+    endif
+
     if count(['python'],&filetype)
         " Autofix python code
+        " This will not be triggered if black is not in the path
         let b:ale_fix_on_save = 1
         let b:ale_fixers = { 'python': ['black'] }
+
         " Force local configuration file to be able to open file outside of
         " `dogweb` dir.
         if themouette#IsDataDogProject()
             let b:python_black_options = '--config ~/Projects/datadog/dogweb/pyproject.toml'
         endif
-        " :echom 'I just added format on save'
     endif
 endfunction
 
