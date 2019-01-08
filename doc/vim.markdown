@@ -29,10 +29,16 @@ Note: the **map leader** is `,`.
   directory
 * ``<leader>` `` open/close a left panel with file explorer in cwd
 
-* `<leader>f` format current file with Neoformat
-
 * `<C-k>` Move to previous error (ALE)
 * `<C-j>` Move to next error (ALE)
+* `<leader>d` Open error panel (ALE)
+* `<leader>?` Describe the symbol under cursor: ALEHover (ALE)
+
+* `<C-p>` Fuzzy search for file (fzf)
+* `<leader>ff` Fuzzy search for file (fzf)
+* `<leader>fb` Fuzzy search for buffer (fzf)
+* `<leader>fc` Fuzzy search for commit in repo history (fzf)
+* `<leader>c` Fuzzy search for commit in current buffer history (fzf)
 
 ## Commands
 

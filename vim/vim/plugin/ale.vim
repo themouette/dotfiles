@@ -8,7 +8,9 @@ let g:ale_echo_msg_format = '[%linter%] %s %(code) %[%severity%]'
 " Navigate through errors easily
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" show usefull info
 nmap <silent> <leader>d <Plug>(ale_detail)
+nmap <silent> <leader>? <Plug>(ale_hover)
 
 " Better :sign interface symbols
 let g:ale_sign_error = '✗'
