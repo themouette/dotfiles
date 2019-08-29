@@ -1,6 +1,9 @@
 " Set this. Airline will handle the rest.
 let g:airline#extensions#ale#enabled = 1
 
+" Enable autocomplete
+let g:ale_completion_enabled = 1
+
 let g:ale_open_list = 0
 let g:ale_list_vertical = 0
 let g:ale_echo_msg_format = '[%linter%] %s %(code) %[%severity%]'
@@ -27,6 +30,8 @@ let g:ale_linters = { 'typescript': ['tsserver', 'tslint'] }
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! RegisterMyAleSetup()
     " echom 'ALE detect Filetype: '.&ft
+    " disable autocomplete by default
+    let b:ale_completion_enabled = 0
 
     " Here we can setup things depending on filetype or anything else
     " We can access filetype through `&ft`.
@@ -70,6 +75,7 @@ function! RegisterMyAleSetup()
 
         " run formatter on save if there is a local prettier bin
         elseif themouette#HasLocalNodeModuleExec('prettier')
+            let b:ale_fixers = ['prettier']
             let b:ale_fix_on_save = 1
         endif
 
