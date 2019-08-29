@@ -11,7 +11,7 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 "
 " Return: {void}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! SetupUltiSnipsFrontend()
+function! RegisterMyUltiSnipsSetup()
     " Always use the global plugins
     let b:UltiSnipsSnippetDirectories = ["UltiSnips"]
 
@@ -41,9 +41,11 @@ function! SetupUltiSnipsFrontend()
     endif
 endfunction
 
-augroup themouette_plugins_ultisnips
+" Clear auto command group
+augroup themouette_plugins_ultisnips_enter
     autocmd!
-
-    "autocmd BufEnter,BufLeave,BufWipeout * call SetupUltiSnipsFrontend()
-    autocmd FileType * call SetupUltiSnipsFrontend()
 augroup END
+
+" On every BufEnter, we configure the plugin
+" BufEnter allows to have an augroup for each buffer
+autocmd themouette_plugins_ultisnips_enter BufEnter  * call RegisterMyUltiSnipsSetup()
