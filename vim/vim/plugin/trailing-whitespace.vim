@@ -19,6 +19,7 @@ endfunction
 " Apply based on filetype
 autocmd BufWritePre *.css,*.scss,*.sass,*.less :call StripTrailingWhitespace()
 autocmd BufWritePre *.js,*.jsx,*.js6,*.es6 :call StripTrailingWhitespace()
+autocmd BufWritePre *.pegjs :call StripTrailingWhitespace()
 autocmd BufWritePre *.html,*.xhtml :call StripTrailingWhitespace()
 autocmd BufWritePre *.yml,*.yaml :call StripTrailingWhitespace()
 autocmd BufWritePre *.py :call StripTrailingWhitespace()
