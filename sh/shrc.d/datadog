@@ -77,7 +77,7 @@ function ddapp {
 ################################################################################
 function ddparams {
     app="${1:-staging}"
-    echo "app_key=$(ddkey $app)"'&application_key='"$(ddapp $app)"
+    echo "api_key=$(ddkey $app)"'&application_key='"$(ddapp $app)"
 }
 
 ################################################################################
@@ -128,7 +128,7 @@ function cdd {
 #   None
 ################################################################################
 function ts_stats {
-  project=${1:-$DATADOG_ROOT/dogweb/static/javascript/datadog}
+  project=${1:-$DATADOG_ROOT/web-ui/javascript/datadog}
   light=${2:-''}
 
   ts_or_tsx="$(find $project -name '*.ts' -or -name '*.tsx' |wc -l)"
@@ -159,8 +159,20 @@ alias vadown='cdd; vagrant suspend; cd -'
 alias vakill='killall VBoxHeadless'
 
 alias cddd='cdd dogweb'
-alias cdds='cdd dogweb/static'
-alias cddjs='cdd dogweb/static/javascript/datadog'
+alias cdds='cdd web-ui'
+alias cddjs='cdd web-ui/javascript/datadog'
 
 alias bs='branches-status -u'
 alias bsu='branches-status'
+
+# Open gitlab’s pipelines list for your current branch
+alias gl="open \"${DD_GITLAB_URL}/DataDog/${PWD##*/}/commits/$(git branch | grep \* | cut -d ' ' -f2)\""
+# Open latest commit directly, so you open the correct pipeline directly
+alias glc="open \"${DD_GITLAB_URL}/DataDog/${PWD##*/}/commit/$(git rev-parse HEAD)/pipelines?ref=$(git branch | grep \* | cut -d ' ' -f2)\""
+
+# Start VM
+# --------
+#
+# 1. upgrade to latest: `vagrant destroy -f && vagrant box prune --name datadog/dogbox && vagrant up --provider=virtualbox && vagrant ssh`
+# 1. install project: `cd ~/dogweb && rake setup && dogbox database reset && dogbox database flush && rake upgrade_db && dogbox devmode enable dogweb`
+# 1. start project `dogbox start core kafka`
