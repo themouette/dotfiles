@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Open GitHub page of Pull Request related to current branch
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+
+################################################################################
+# open_url description
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function open_url {
+    command -v open >/dev/null 2>&1 && {
+        open "$@"
+    }
+    command -v xdg-open >/dev/null 2>&1 && {
+        xdg-open "$@"
+    }
+}
+
+################################################################################
+# Program main function
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function main {
+    branch="${1:-$(git rev-parse --abbrev-ref HEAD)}"
+    repo=$(git config --get remote.origin.url | sed -E 's/(https:\/\/|git@)github.com(:|\/)([^.]*)(.git)?/\3/')
+    open_url "https://github.com/$repo/pull/new/$branch"
+}
+
+main $@

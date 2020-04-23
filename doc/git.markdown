@@ -8,8 +8,9 @@ Git Configuration
 * `git lola` show all branch log digest
 * `git cs` search all local branches to checkout
 * `git csr` search all branches, including remotes, to checkout
+* `git pr` open pull request related to current branch
 
 ## Aliases
 
 * `gst` for git status
-* `gti` to play nice even whith typo
+* `gti` to play nice even with typo

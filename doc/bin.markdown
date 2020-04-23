@@ -14,3 +14,4 @@ are linked in `/usr/local/bin/`
 - `git-branch-fzf-local`: allow to checkout a branch, including remote by
   searching through fzf
 - `typescript-stats`: simple stats for typescript migration of a directory
+- `git-pr`: open GitHub PR related to current branch
