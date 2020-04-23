@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# allow to navigate accross branches using fzf
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+main () {
+    local branches branch
+    branches=$(git branch --all | grep -v HEAD)  && branch=$(echo "$branches" |
+        fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m)  && git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+main $@

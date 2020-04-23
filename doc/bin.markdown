@@ -9,3 +9,8 @@ are linked in `/usr/local/bin/`
 - `backup`: type `backup -h` for further information.
 - `git-update`: Update git repository from remote. Type `git-update -h` for
   further information.
+- `git-branch-fzf-local`: allow to checkout a local branch by searching through
+  fzf
+- `git-branch-fzf-local`: allow to checkout a branch, including remote by
+  searching through fzf
+- `typescript-stats`: simple stats for typescript migration of a directory

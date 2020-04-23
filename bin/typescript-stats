@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+# Generate TS migration related stats
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+
+
+
+DEFAULT_PROJECT="$(pwd)"
+SCRIPT=typescript-stats
+INFO="
+Display TypeScript migration stats.
+"
+
+function usage
+{
+   echo
+   echo $INFO
+   echo
+   echo -e " \033[4mUsage:\033[0m $SCRIPT -l my-awesome-project"
+   echo
+   echo "          Options :"
+   echo "              -h           display this help"
+   echo "              -l           display a light version"
+   echo
+   echo -e " \033[4mExemples:\033[0m "
+   echo -e "       $SCRIPT"
+   echo -e "       $SCRIPT -l my-awesome-project/src"
+   echo -e '       for file in $(ls -d my-awesome-project/src/*/) ; do echo "$file: $('$SCRIPT' $file light)" ; done'
+   echo
+
+   exit 255
+}
+
+
+# Read parameters
+o_light=""
+while getopts "lh" options; do
+   case $options in
+      l) o_light="true"
+         ;;
+    h|?) usage
+         ;;
+      *) usage
+         ;;
+  esac
+done
+# remove read arguments
+shift $(( OPTIND - 1 ))
+
+################################################################################
+# Program main function
+# Globals:
+#   DATADOG_ROOT
+# Arguments:
+#   $1: directory to check
+# Returns
+#   None
+################################################################################
+function main {
+  project=${1:-$DEFAULT_PROJECT}
+
+  ts_or_tsx="$(find $project -name '*.ts' -or -name '*.tsx' |wc -l)"
+  js_or_jsx="$(find $project -name '*.js' -or -name '*.jsx' |wc -l)"
+  less="$(find $project -name '*.less' |wc -l)"
+  markdown="$(find $project -name '*.markdown' -or -name '*.md' |wc -l)"
+  jest_snapshots="$(find $project -name '*.snap' |wc -l)"
+  total="$(find $project -type file |wc -l)"
+
+  if [[ -n $o_light ]]
+  then
+      echo "migration to ts: $(bc<<<"scale=2;${ts_or_tsx}/(${js_or_jsx}+${ts_or_tsx})*100") %"
+      return
+  fi
+
+  echo -e "tsx?: \t\t${ts_or_tsx}"
+  echo -e "jsx?: \t\t${js_or_jsx}"
+  echo -e "less: \t\t${less}"
+  echo -e "markdown: \t${markdown}"
+  echo -e "jest snapshots: ${jest_snapshots}"
+  echo -e "======================"
+  echo -e "total files: \t${total}"
+  echo -e "migration to ts: $(bc<<<"scale=2;${ts_or_tsx}/(${js_or_jsx}+${ts_or_tsx})*100") %"
+}
+
+main $@
