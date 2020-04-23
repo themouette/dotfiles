@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Open GitHub page of Pull Request related to current branch
+# based on https://gist.github.com/garno/b9e02113f638d928e2be0a76dbf5b8d1
 
 set -o errexit
 set -o pipefail
@@ -8,6 +9,9 @@ set -o nounset
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
+urlencode() {
+	python -c "import urllib, sys; print urllib.quote(sys.argv[1])" "$@"
+}
 
 ################################################################################
 # open_url description
@@ -37,9 +41,23 @@ function open_url {
 #   None
 ################################################################################
 function main {
-    branch="${1:-$(git rev-parse --abbrev-ref HEAD)}"
-    repo=$(git config --get remote.origin.url | sed -E 's/(https:\/\/|git@)github.com(:|\/)([^.]*)(.git)?/\3/')
-    open_url "https://github.com/$repo/pull/new/$branch"
+	# Retrieve branch name
+	branch="${1:-$(git rev-parse --abbrev-ref HEAD)}"
+
+	# Retrieve target branch
+	destination_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+
+	# Retrieve repository URL
+	remote_url=$(git config --get remote.origin.url | sed -E 's/(https:\/\/|git@)([^\/:]*)(:|\/)([^.]*)(.git)?/\2/')
+	repo=$(git config --get remote.origin.url | sed -E 's/(https:\/\/|git@)([^\/:]*)(:|\/)([^.]*)(.git)?/\4/')
+
+	if [[ $remote_url == github* ]]; then
+		pr_url=https://github.com/pulls?q=$(urlencode "is:pr sort:updated-desc repo:${repo} head:${branch}")
+	else # Try gitlab format
+		pr_url="https://$remote_url/$repo/merge_requests/new?merge_request%5Bsource_branch%5D=$branch&merge_request%5Btarget_branch%5D=$destination_branch"
+	fi
+
+	open_url "$pr_url"
 }
 
 main $@
