@@ -16,6 +16,7 @@ Refer to dedicated documentation to learn more:
 * [vim usage](https://github.com/themouette/dotfiles/blob/master/doc/vim.markdown)
 * [git usage](https://github.com/themouette/dotfiles/blob/master/doc/git.markdown)
 * [bin usage](https://binhub.com/themouette/dotfiles/blob/master/doc/bin.markdown)
+* [tmux usage](https://binhub.com/themouette/dotfiles/blob/master/doc/tmux.markdown)
 
 ## Install NodeJs
 

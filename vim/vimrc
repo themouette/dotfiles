@@ -1,3 +1,16 @@
+" Define current system.
+" if s:sys == "Linux"
+"   Do something
+" endif
+" if s:sys == "Darwin"
+"   Do something
+" endif
+let s:sys=system('uname -s | perl -pe "chomp"')
+
+" Log everything that hsppens
+" set verbosefile=~/.log/vim/verbose.log
+" set verbose=0
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set shell=/bin/zsh            " Use zsh as shell
@@ -11,7 +24,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'JarrodCTaylor/vim-256-color-schemes'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
@@ -36,12 +48,16 @@ Plugin 'honza/vim-snippets'
 
 " Install language syntaxes
 Plugin 'sheerun/vim-polyglot'
+Plugin 'alunny/pegjs-vim'
 " Plugin 'pangloss/vim-javascript'
 " Plugin 'mxw/vim-jsx'
 " Plugin 'flowtype/vim-flow'
 " Plugin 'mustache/vim-mustache-handlebars'
 " Plugin 'cakebaker/scss-syntax.vim'
 " Plugin 'reasonml-editor/vim-reason-plus'
+"
+" " Sync tmux and vim navigation
+Plugin 'christoomey/vim-tmux-navigator'
 "
 " " Elixir
 " Plugin 'elixir-lang/vim-elixir'
@@ -76,7 +92,11 @@ augroup END
 " Set title on X window
 set title
 
-language en_US.utf8                 " set user interface anguage to en
+if s:sys == "Linux"
+    language en_US.UTF8                  " set user interface anguage to en
+elseif s:sys == "Darwin"
+    language en_US.UTF-8                 " set user interface anguage to en
+endif
 
 syntax on
 " default omnifunc completion
