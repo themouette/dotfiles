@@ -80,6 +80,12 @@ vim +PluginInstall +qall
     mkdir -p ~/.config/fontconfig/conf.d/
     wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -O ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
 }
+[[ ! -d ~/.vim/bundle/coc.nvim/ ]] || {
+    # Install coc extensions
+    vim +'CocInstall coc-tsserver coc-json coc-html coc-css coc-python coc-phpls coc-prettier coc-eslint coc-yaml' +qall
+    # vim +'CocCommand extensions.forceUpdateAll' +qall
+    cd $DIR
+}
 
 ##
 # tmux configuration

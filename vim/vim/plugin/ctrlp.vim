@@ -1,3 +1,7 @@
+" WARNING: This file is not used anymore since I moved away from ctrlp.vim in
+" favor of fzf.vim
+finish
+
 " ctrlp
 " Replaced ctrlp.vim with command-t
 let g:ctrlp_map = '<c-p>'

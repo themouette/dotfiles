@@ -30,7 +30,8 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'airblade/vim-gitgutter'
 " Plugin 'sbdchd/neoformat'
-Plugin 'w0rp/ale'
+" Plugin 'w0rp/ale'
+Plugin 'neoclide/coc.nvim'
 
 " command t
 "Plugin 'git://git.wincent.com/command-t.git'

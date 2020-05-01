@@ -1,3 +1,7 @@
+" WARNING: This file is not used anymore since I moved away from ale in
+" favor of coc.
+" Ale does both auto format AND syntax checker.
+finish
 " Set this. Airline will handle the rest.
 let g:airline#extensions#ale#enabled = 1
 
