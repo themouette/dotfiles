@@ -78,6 +78,8 @@ ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
 [[ -d ~/.vim/bundle/Vundle.vim ]] || git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # Install vundle dependencies
 vim +PluginInstall +qall
+# Install Coc.nvim extensions
+vim -c 'CocInstall -sync coc-json coc-html coc-git coc-prettier coc-tsserver coc-css|q'
 
 #[[ ! -d ~/.vim/bundle/command-t/ ]] || {
 #    # Install command-t
