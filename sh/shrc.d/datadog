@@ -81,26 +81,6 @@ function ddparams {
 }
 
 ################################################################################
-# pr description
-# Globals:
-#   None
-# Arguments:
-#   None
-# Returns
-#   None
-################################################################################
-function pr {
-    cd $DATADOG_ROOT/dogweb
-    if [ -z "$1" ]
-    then
-        branch=$(git rev-parse --abbrev-ref HEAD)
-    else
-        branch=$1
-    fi
-    open "https://github.com/DataDog/dogweb/compare/$branch?expand=1"
-}
-
-################################################################################
 # cd in datadog context
 # Globals:
 #   None
@@ -166,9 +146,9 @@ alias bs='branches-status -u'
 alias bsu='branches-status'
 
 # Open gitlab’s pipelines list for your current branch
-alias gl="open \"${DD_GITLAB_URL}/DataDog/${PWD##*/}/commits/$(git branch | grep \* | cut -d ' ' -f2)\""
+alias gl="open \"${DD_GITLAB_URL}/DataDog/${PWD##*/}/commits/\$(git branch | grep \* | cut -d ' ' -f2)\""
 # Open latest commit directly, so you open the correct pipeline directly
-alias glc="open \"${DD_GITLAB_URL}/DataDog/${PWD##*/}/commit/$(git rev-parse HEAD)/pipelines?ref=$(git branch | grep \* | cut -d ' ' -f2)\""
+alias glc="open \"${DD_GITLAB_URL}/DataDog/${PWD##*/}/commit/\$(git rev-parse HEAD)/pipelines?ref=\$(git branch | grep \* | cut -d ' ' -f2)\""
 
 # Start VM
 # --------

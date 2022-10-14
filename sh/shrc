@@ -7,6 +7,17 @@ elif [[ "$(uname -s)" = "Linux" ]] ; then
     IS_LINUX="true"
 fi
 
+# Some common commands
+
+is_osx() {
+	local platform=$(uname)
+	[ "$platform" == "Darwin" ]
+}
+
+iterm_terminal() {
+	[[ "$TERM_PROGRAM" =~ ^iTerm ]]
+}
+
 for file in $HOME/.shrc.d/*; do
     source "$file"
 done
