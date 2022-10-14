@@ -1,23 +1,27 @@
 {
-  "diagnostic.errorSign": "┃",
-  "diagnostic.warningSign": "┃",
-  "diagnostic.infoSign": "┃",
-  "json.format.enable": true,
-  "coc.preferences.formatOnSaveFiletypes": ["*"],
-  "prettier.eslintIntegration": true,
-  "eslint.autoFixOnSave": true,
-  "eslint.filetypes": [
-    "javascript",
-    "typescript",
-    "javascriptreact",
-    "typescriptreact",
-    "json"
-  ],
-  "languageserver": {
-    "terraform": {
-      "command": "terraform-lsp",
-      "filetypes": ["terraform"],
-      "initializationOptions": {}
+    "diagnostic.errorSign": "┃",
+    "diagnostic.warningSign": "┃",
+    "diagnostic.infoSign": "┃",
+    "json.format.enable": true,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "*"
+    ],
+    "eslint.autoFixOnSave": true,
+    "typescript.format.enabled": false,
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "javascriptreact",
+        "typescriptreact",
+        "json"
+    ],
+    "languageserver": {
+        "terraform": {
+            "command": "terraform-lsp",
+            "filetypes": [
+                "terraform"
+            ],
+            "initializationOptions": {}
+        }
     }
-  }
 }

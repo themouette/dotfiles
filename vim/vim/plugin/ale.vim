@@ -26,7 +26,7 @@ let g:ale_sign_warning = '⚠'
 " Use tslint to lint tsx files
 " https://github.com/w0rp/ale/issues/1662
 let g:ale_linter_aliases = {'typescriptreact': 'typescript'}
-let g:ale_linters = { 'typescript': ['tsserver', 'tslint'] }
+let g:ale_linters = { 'typescript': ['tsserver', 'tslint', 'eslint'] }
 
 " Register my Ale configuration depending on file type
 " Argument: N/A
@@ -64,6 +64,14 @@ function! RegisterMyAleSetup()
         if themouette#HasNodeModuleExec('prettier')
             " set prettier executable
             let b:javascript_prettier_executable = themouette#FindNodeModulesExec('prettier')
+        endif
+        if themouette#HasNodeModuleExec('tsserver')
+            " set prettier executable
+            let b:ale_typescript_tsserver_executable = themouette#FindNodeModulesExec('tsserver')
+        endif
+        if themouette#HasNodeModuleExec('eslint')
+            " set prettier executable
+            let b:javascript_eslint_executable = themouette#FindNodeModulesExec('eslint')
         endif
 
         " Custom setup for datadog project

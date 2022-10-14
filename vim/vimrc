@@ -1,11 +1,10 @@
-" Define current system.
-" if s:sys == "Linux"
-"   Do something
-" endif
-" if s:sys == "Darwin"
-"   Do something
-" endif
-let s:sys=system('uname -s | perl -pe "chomp"')
+if !exists("g:os")
+    if has("win64") || has("win32") || has("win16")
+        let g:os = "Windows"
+    else
+        let g:os = substitute(system('uname'), '\n', '', '')
+    endif
+endif
 
 " Log everything that hsppens
 " set verbosefile=~/.log/vim/verbose.log
@@ -22,16 +21,19 @@ call vundle#begin()
 " call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 Plugin 'altercation/vim-colors-solarized'
+" Plugin 'rakr/vim-one'
+Plugin 'joshdick/onedark.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'airblade/vim-gitgutter'
 " Plugin 'sbdchd/neoformat'
 " Plugin 'w0rp/ale'
-Plugin 'neoclide/coc.nvim'
 
 " command t
 "Plugin 'git://git.wincent.com/command-t.git'
@@ -47,18 +49,20 @@ Plugin 'tpope/vim-vinegar'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
+" " Sync tmux and vim navigation
+Plugin 'christoomey/vim-tmux-navigator'
+
 " Install language syntaxes
+Plugin 'HerringtonDarkholme/yats.vim'
 Plugin 'sheerun/vim-polyglot'
-Plugin 'alunny/pegjs-vim'
+Plugin 'pantharshit00/vim-prisma'
+" Plugin 'alunny/pegjs-vim' " now available in vim-polygrol
 " Plugin 'pangloss/vim-javascript'
 " Plugin 'mxw/vim-jsx'
 " Plugin 'flowtype/vim-flow'
 " Plugin 'mustache/vim-mustache-handlebars'
 " Plugin 'cakebaker/scss-syntax.vim'
 " Plugin 'reasonml-editor/vim-reason-plus'
-"
-" " Sync tmux and vim navigation
-Plugin 'christoomey/vim-tmux-navigator'
 "
 " " Elixir
 " Plugin 'elixir-lang/vim-elixir'
@@ -93,9 +97,9 @@ augroup END
 " Set title on X window
 set title
 
-if s:sys == "Linux"
+if g:os == "Linux"
     language en_US.UTF8                  " set user interface anguage to en
-elseif s:sys == "Darwin"
+elseif g:os == "Darwin"
     language en_US.UTF-8                 " set user interface anguage to en
 endif
 
@@ -164,8 +168,11 @@ endif
 " Color scheme
 let &t_Co=256
 let g:solarized_termcolors=256
+"set background=dark
+"colorscheme solarized
+
+colorscheme onedark
 set background=dark
-colorscheme solarized
 
 " http://vim.wikia.com/wiki/Toggle_auto-indenting_for_code_paste
 " F2 = toggle paste mode
@@ -237,7 +244,8 @@ map <silent> <leader>/ :let @/=""<CR>:echo "Cleared search register."<cr>
 "
 " source: http://blog.vanutsteen.nl/2013/02/06/set-the-ubuntu-mono-patched-powerline-font-as-system-font-in-ubuntu/
 let g:airline_powerline_fonts = 1
-let g:airline_theme='badwolf'
+" let g:airline_theme='badwolf'
+let g:airline_theme='onedark'
 
 " Ctags
 set nocp
@@ -283,7 +291,11 @@ endfunction
 set formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Gist
-let g:gist_clip_command     = 'pbcopy'
+if g:os == "Linux"
+    let g:gist_clip_command     = 'xclip'
+elseif g:os == "Darwin"
+    let g:gist_clip_command     = 'pbcopy'
+endif
 let g:gist_detect_filetype  = 1
 let g:gist_post_private     = 1
 

@@ -4,6 +4,11 @@
 "                                                                              "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+function! themouette#UseYarnV2()
+    let yarn_path = finddir('.yarn', '.;')
+    return strlen(yarn_path)
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Check wether a node module is locally installed or not
@@ -14,6 +19,15 @@
 " Return: {boolean}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! themouette#HasLocalNodeModule(module_name)
+    " Yarn 2 does not use `node_modules`, we need to leverage package.json
+    if themouette#UseYarnV2()
+        let package_json = findfile('package.json', '.;')
+        if empty(package_json)
+            return 0
+        endif
+        return filereadable(package_json) && match(readfile(package_json),'"'. a:module_name .'"')
+    endif
+
     let module_name = finddir('node_modules', '.;') . '/' . a:module_name
 
     " make sure this is an absolute path
@@ -35,6 +49,18 @@ endfunction
 function! themouette#FindLocalNodeModulesExec(module_cmd)
     let cmd_path = finddir('node_modules', '.;') . '/.bin/' . a:module_cmd
 
+    " make sure this is an absolute path
+    if matchstr(cmd_path, "^\/\\w") == ''
+        let cmd_path = getcwd() . "/" . cmd_path
+    endif
+    " check it is executable
+    if executable(cmd_path)
+        return cmd_path
+    endif
+
+    " yarn 2 does not expose all the executable in `node_modules` anymore.
+    " Let's leverage the `.vscode` pnpify config.
+    let cmd_path = finddir('.yarn', '.;') . '/bin/' . a:module_cmd
     " make sure this is an absolute path
     if matchstr(cmd_path, "^\/\\w") == ''
         let cmd_path = getcwd() . "/" . cmd_path
