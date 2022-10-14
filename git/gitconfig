@@ -3,6 +3,7 @@
 [core]
   editor = vim
 	pager = less -+F -+X
+	hooksPath = /usr/local/dd/global_hooks
 [color]
   ui = auto
   status = auto
@@ -48,12 +49,12 @@
   changed = green
   untracked = cyan
 [alias]
-   logg = log --graph --decorate
-   lol = log --graph --decorate --pretty=oneline --abbrev-commit
-   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-   chekcout = checkout
-   cs = branch-fzf-local
-   csr = branch-fzf-remote
+  logg = log --graph --decorate
+  lol = log --decorate --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all  --date=short
+  chekcout = checkout
+  cs = branch-fzf-local
+  csr = branch-fzf-remote
 [user]
 	name = Julien Muetton
 	email = julien@muetton.me
