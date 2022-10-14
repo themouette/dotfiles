@@ -5,6 +5,13 @@
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 ##
+# Install brew if needed
+##
+[ "$(uname -s)" == "Darwin" ] && [ ! -f '/opt/homebrew/bin/brew' ] && {
+    (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && eval "$(/opt/homebrew/bin/brew shellenv)")
+}
+
+##
 # install some base packages
 ##
 command -v pacman >/dev/null 2>&1 && {
@@ -16,6 +23,10 @@ command -v apt-get >/dev/null 2>&1 && {
     sudo apt-get install zsh ack-grep tmux htop wget curl vim-nox tree elinks
 }
 
+command -v brew >/dev/null 2>&1 && {
+    # In case this is a debian installation
+    brew install rg tmux htop fzf vim tree tig
+}
 
 ##
 # sh configuration, common for bash and zsh
@@ -65,21 +76,21 @@ ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
 # Install vundle dependencies
 vim +PluginInstall +qall
 
-[[ ! -d ~/.vim/bundle/command-t/ ]] || {
-    # Install command-t
-    # Compilation is required
-    cd ~/.vim/bundle/command-t/ruby/command-t
-    ruby extconf.rb
-    make
-    cd $DIR
-}
-[[ -f /usr/share/fonts/misc/PowerlineSymbols.otf ]] || {
-    # Install vim-airline/vim-powerline font
-    sudo wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -O /usr/share/fonts/misc/PowerlineSymbols.otf
-    fc-cache -vf ~/.fonts/
-    mkdir -p ~/.config/fontconfig/conf.d/
-    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -O ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
-}
+#[[ ! -d ~/.vim/bundle/command-t/ ]] || {
+#    # Install command-t
+#    # Compilation is required
+#    cd ~/.vim/bundle/command-t/ruby/command-t
+#    ruby extconf.rb
+#    make
+#    cd $DIR
+#}
+#[[ -f /usr/share/fonts/misc/PowerlineSymbols.otf ]] || {
+#    # Install vim-airline/vim-powerline font
+#    sudo wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -O /usr/share/fonts/misc/PowerlineSymbols.otf
+#    fc-cache -vf ~/.fonts/
+#    mkdir -p ~/.config/fontconfig/conf.d/
+#    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -O ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
+#}
 [[ ! -d ~/.vim/bundle/coc.nvim/ ]] || {
     # Install coc extensions
     vim +'CocInstall coc-tsserver coc-json coc-html coc-css coc-python coc-phpls coc-prettier coc-eslint coc-yaml' +qall
