@@ -193,3 +193,5 @@ function gpgenv {
             ;;
     esac
 }
+
+# vim: set ft=sh:

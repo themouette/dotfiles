@@ -5,3 +5,5 @@
 # echo '{"foo": "lorem", "bar": "ipsum"}' | prettyjson
 # prettyjson toto.json
 alias prettyjson='python -m json.tool'
+
+# vim: set ft=sh:

@@ -31,3 +31,5 @@ alias dockergc='docker rm -v $(docker ps -a -q -f status=exited) ; docker rmi $(
 #
 # If max reached max limit of file descriptors:
 # echo "fs.file-max=100000"  | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+# vim: set ft=sh:

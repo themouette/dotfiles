@@ -4,4 +4,5 @@ command -v rbenv >/dev/null 2>&1 && {
 }
 # Add brew bins for mac
 [[ ! -d '/usr/local/lib/ruby/gems/2.6.0/bin' ]] || export PATH="$PATH:/usr/local/lib/ruby/gems/2.6.0/bin"
-# vim ft=sh
+
+# vim: set ft=sh:
