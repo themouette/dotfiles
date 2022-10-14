@@ -1,4 +1,12 @@
 # Required by `setup_readline`
 # See https://doc.ubuntu-fr.org/terminal?&#pour_completer_les_commandes_a_partir_de_l_historique
-shopt -s histappend
-PROMPT_COMMAND='history -a'
+# and http://jesrui.sdf-eu.org/remember-all-your-bash-history-forever.html
+HISTFILESIZE=-1
+HISTSIZE=-1
+shopt -s histappend                 # append to history, don't overwrite it
+# attempt to save all lines of a multiple-line command in the same history entry
+shopt -s cmdhist
+# save multi-line commands to the history with embedded newlines
+shopt -s lithist
+# Not really sure we need this
+# PROMPT_COMMAND='history -a'
