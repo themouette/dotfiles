@@ -1,4 +1,8 @@
-# Install brew autocomplete as explained in https://docs.brew.sh/Shell-Completion
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+if [[ -f /opt/homebrew/bin/brew ]]; then
+#  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    # Force certain more-secure behaviours from homebrew
+    export HOMEBREW_NO_INSECURE_REDIRECT=1
+    export HOMEBREW_CASK_OPTS=--require-sha
 fi

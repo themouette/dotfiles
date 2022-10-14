@@ -2,3 +2,6 @@ command -v rbenv >/dev/null 2>&1 && {
     eval "$(rbenv init -)" # Add rbenv shims to path
     export PATH="$PATH:$HOME/.gem/ruby/2.5.1/bin"
 }
+# Add brew bins for mac
+[[ ! -d '/usr/local/lib/ruby/gems/2.6.0/bin' ]] || export PATH="$PATH:/usr/local/lib/ruby/gems/2.6.0/bin"
+# vim ft=sh

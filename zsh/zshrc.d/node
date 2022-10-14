@@ -1,18 +1,39 @@
-# register nvm
-export NVM_DIR="${HOME}/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# From https://github.com/creationix/nvm#manual-upgrade
-alias upgrade_nvm="(cd \"$NVM_DIR\" ; git fetch origin ; git checkout \`git describe --abbrev=0 --tags --match \"v[0-9]*\" origin\`) && \. \"$NVM_DIR/nvm.sh\""
-
 # Add local npm binaries to path.
 export PATH="./node_modules/.bin:$PATH"
+# increase node memory
+export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=12288"
+
+# register nvm if exists
+if [[ -d "${HOME}/.nvm" ]] ; then
+    export NVM_DIR="${HOME}/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    # From https://github.com/creationix/nvm#manual-upgrade
+    alias upgrade_nvm="(cd \"$NVM_DIR\" ; git fetch origin ; git checkout \`git describe --abbrev=0 --tags --match \"v[0-9]*\" origin\`) && \. \"$NVM_DIR/nvm.sh\""
+
+fi
+
+# In case nodenv is found, init it
+command -v nodenv >/dev/null 2>&1 && {
+    eval "$(nodenv init -)"
+}
 
 # Use Yarn installed with curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
-[ -d "$HOME/.config/yarn/global/node_modules/.bin" ] && export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-[ -d "$HOME/.yarn/bin" ] && export PATH="$HOME/.yarn/bin:$PATH"
+if [[ -d "$HOME/.yarn/bin" ]] ; then
+    [ -d "$HOME/.yarn/bin" ] && export PATH="$HOME/.yarn/bin:$PATH"
+    [ -d "$HOME/.config/yarn/global/node_modules/.bin" ] && export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+fi
 
-# increase node memory
-export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=2048"
+localpnp () {
+    local abs=`which $1`
+    local resolved=`readlink -f $abs`
+    shift
+    echo "running yarn node $resolved $@"
+    yarn node $resolved $@
+}
 
+# Add volta to PATH
+if [[ -d "${HOME}/.volta" ]] ; then
+    export VOLTA_HOME="$HOME/.volta"
+    export PATH="$VOLTA_HOME/bin:$PATH"
+fi

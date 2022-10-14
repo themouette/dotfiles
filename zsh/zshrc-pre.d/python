@@ -1,0 +1,9 @@
+# Init pyenv if available
+command -v pyenv >/dev/null 2>&1 && {
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    # supposed to be in ~/.zprofile or ~/.profile
+    eval "$(pyenv init --path)"
+}
+
+# :vim ft=sh
