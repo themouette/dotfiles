@@ -109,7 +109,10 @@ vim -c 'CocInstall -sync coc-json coc-html coc-git coc-prettier coc-tsserver coc
 [[ ! -f ~/.tmux.conf ]] || rm ~/.tmux.conf
 ln -s  ${DIR}/tmux/tmux.conf ~/.tmux.conf
 mkdir -p ~/.tmux/plugins/
-[[ -d ~/.tmux/plugins/tpm ]] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+[[ -d ~/.tmux/plugins/tpm ]] || {
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \
+        ~/.tmux/plugins/tpm/bin/install_plugins
+    }
 
 ##
 # git configuration
