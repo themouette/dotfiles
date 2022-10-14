@@ -26,6 +26,9 @@ command -v apt-get >/dev/null 2>&1 && {
 command -v brew >/dev/null 2>&1 && {
     # In case this is a debian installation
     brew install rg tmux htop fzf vim tree tig
+    # Install PowerlineSymbols
+    brew tap homebrew/cask-fonts
+    brew install --cask font-dejavu font-dejavu-sans-mono-for-powerline font-dejavu-sans-mono-nerd-font
 }
 
 ##
