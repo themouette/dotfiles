@@ -24,8 +24,9 @@ command -v apt-get >/dev/null 2>&1 && {
 }
 
 command -v brew >/dev/null 2>&1 && {
-    # In case this is a debian installation
-    brew install rg tmux htop fzf vim tree tig
+    # In case this is a macos installation
+    brew install ripgrep tmux htop fzf bat vim tree tig ykman httpie jq
+    brew install --cask firefox signal
     # Install PowerlineSymbols
     brew tap homebrew/cask-fonts
     brew install --cask font-dejavu font-dejavu-sans-mono-for-powerline font-dejavu-sans-mono-nerd-font
@@ -74,12 +75,15 @@ ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
     ln -s ${DIR}/vim/vim ~/.vim
 }
 
+# I do not use vundle anymore but I keep install script for reference.
 # install Vundle if not already installed
-[[ -d ~/.vim/bundle/Vundle.vim ]] || git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-# Install vundle dependencies
-vim +PluginInstall +qall
-# Install Coc.nvim extensions
-vim -c 'CocInstall -sync coc-json coc-html coc-git coc-prettier coc-tsserver coc-css|q'
+#[[ -d ~/.vim/bundle/Vundle.vim ]] || git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+## Install vundle dependencies
+#vim +PluginInstall +qall
+
+[[ -f ~/.vim/autoload/plug.vim ]] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+vim +PlugInstall +qall
 
 #[[ ! -d ~/.vim/bundle/command-t/ ]] || {
 #    # Install command-t
@@ -98,7 +102,7 @@ vim -c 'CocInstall -sync coc-json coc-html coc-git coc-prettier coc-tsserver coc
 #}
 [[ ! -d ~/.vim/bundle/coc.nvim/ ]] || {
     # Install coc extensions
-    vim +'CocInstall coc-tsserver coc-json coc-html coc-css coc-python coc-phpls coc-prettier coc-eslint coc-yaml' +qall
+    vim +'CocInstall coc-tsserver coc-json coc-html coc-css coc-prettier coc-eslint coc-python coc-phpls coc-yaml coc-git' +qall
     # vim +'CocCommand extensions.forceUpdateAll' +qall
     cd $DIR
 }
