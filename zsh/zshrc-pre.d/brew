@@ -6,3 +6,12 @@ if [[ -f /opt/homebrew/bin/brew ]]; then
     export HOMEBREW_NO_INSECURE_REDIRECT=1
     export HOMEBREW_CASK_OPTS=--require-sha
 fi
+
+# Autocompletion
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
