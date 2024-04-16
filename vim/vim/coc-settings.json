@@ -1,27 +1,25 @@
 {
-    "diagnostic.errorSign": "┃",
-    "diagnostic.warningSign": "┃",
-    "diagnostic.infoSign": "┃",
-    "json.format.enable": true,
-    "coc.preferences.formatOnSaveFiletypes": [
-        "*"
-    ],
-    "eslint.autoFixOnSave": true,
-    "typescript.format.enabled": false,
-    "eslint.validate": [
-        "javascript",
-        "typescript",
-        "javascriptreact",
-        "typescriptreact",
-        "json"
-    ],
-    "languageserver": {
-        "terraform": {
-            "command": "terraform-lsp",
-            "filetypes": [
-                "terraform"
-            ],
-            "initializationOptions": {}
-        }
+  "diagnostic.errorSign": "┃",
+  "diagnostic.warningSign": "┃",
+  "diagnostic.infoSign": "┃",
+  "json.format.enable": true,
+  "coc.preferences.formatOnSaveFiletypes": ["*"],
+  "eslint.autoFixOnSave": true,
+  "typescript.format.enabled": false,
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "json"
+  ],
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-lsp",
+      "filetypes": ["terraform"],
+      "initializationOptions": {}
     }
+  },
+  "tsserver.useLocalTsdk": true
 }

@@ -14,78 +14,80 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set shell=/bin/zsh            " Use zsh as shell
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-" call vundle#begin('~/some/path/here')
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'neoclide/coc.nvim', {'branch': 'release'}
-Plugin 'altercation/vim-colors-solarized'
-" Plugin 'rakr/vim-one'
-Plugin 'joshdick/onedark.vim'
-Plugin 'mileszs/ack.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'airblade/vim-gitgutter'
-" Plugin 'sbdchd/neoformat'
-" Plugin 'w0rp/ale'
+call plug#begin()
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'altercation/vim-colors-solarized'
+" Plug 'rakr/vim-one'
+Plug 'hachy/eva01.vim', { 'branch': 'main' }
+Plug 'joshdick/onedark.vim'
+Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
+" Plug 'sbdchd/neoformat'
+" Plug 'w0rp/ale'
 
 " command t
-"Plugin 'git://git.wincent.com/command-t.git'
+"Plug 'git://git.wincent.com/command-t.git'
 " ctrlp.vim is a pure vimscript replacement for command-t
-"Plugin 'ctrlp.vim'
+"Plug 'ctrlp.vim'
 " Fzf is a real fast fuzzy finder
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 " basicly type "-" in a buffer to go up a directory
-Plugin 'tpope/vim-vinegar'
+Plug 'tpope/vim-vinegar'
 
 " Install ultisnips.
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " " Sync tmux and vim navigation
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Install language syntaxes
-Plugin 'HerringtonDarkholme/yats.vim'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'pantharshit00/vim-prisma'
-" Plugin 'alunny/pegjs-vim' " now available in vim-polygrol
-" Plugin 'pangloss/vim-javascript'
-" Plugin 'mxw/vim-jsx'
-" Plugin 'flowtype/vim-flow'
-" Plugin 'mustache/vim-mustache-handlebars'
-" Plugin 'cakebaker/scss-syntax.vim'
-" Plugin 'reasonml-editor/vim-reason-plus'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'pantharshit00/vim-prisma'
+" Plug 'alunny/pegjs-vim' " now available in vim-polygrol
+" Plug 'pangloss/vim-javascript'
+" Plug 'mxw/vim-jsx'
+" Plug 'flowtype/vim-flow'
+" Plug 'mustache/vim-mustache-handlebars'
+" Plug 'cakebaker/scss-syntax.vim'
+" Plug 'reasonml-editor/vim-reason-plus'
 "
 " " Elixir
-" Plugin 'elixir-lang/vim-elixir'
+" Plug 'elixir-lang/vim-elixir'
 "
 " " Jinja2
-" Plugin 'glench/vim-jinja2-syntax'
+" Plug 'glench/vim-jinja2-syntax'
 
 " The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
+" Keep Plug commands between vundle#begin/end.
 " plugin on GitHub repo
 " plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
+" Plug 'L9'
 " Git plugin not hosted on GitHub
 " git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
+" Plug 'file:///home/gmarik/path/to/plugin'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
+" Plug 'user/L9', {'name': 'newL9'}
+"
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+Plug 'github/copilot.vim'
+
+call plug#end()            " required
 filetype plugin indent on    " required
 
 " reload vimrc on change
@@ -171,8 +173,13 @@ let g:solarized_termcolors=256
 "set background=dark
 "colorscheme solarized
 
-colorscheme onedark
+"colorscheme onedark
+"set background=dark
+
+colorscheme eva01
 set background=dark
+" overide max-width column color
+hi ColorColumn term=reverse ctermbg=236 guibg=#2C323C
 
 " http://vim.wikia.com/wiki/Toggle_auto-indenting_for_code_paste
 " F2 = toggle paste mode
@@ -229,7 +236,7 @@ map <leader>s :%s/
 " ack
 nmap <leader>a :Ack<space>
 
-" Clear search highlight
+" Clear search highlight (set hlsearch)
 map <silent> <leader>/ :let @/=""<CR>:echo "Cleared search register."<cr>
 
 " Powerline
