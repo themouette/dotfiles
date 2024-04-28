@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Set the tty for gpg
+# Thanks to https://github.com/keybase/keybase-issues/issues/2798
+export GPG_TTY=$(tty)
+
 ################################################################################
 # Display help for gpgenv
 # Globals:
