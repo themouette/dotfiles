@@ -58,4 +58,11 @@
 [user]
 	name = Julien Muetton
 	email = julien@muetton.me
-	signingkey = D81EDD79994405F7
+#	If using ssh, uncomment this
+#	signingkey = /Users/julien.muetton/.ssh/id_rsa.pub
+    signingkey = 0FE9A9C60ED65AFD
+# If using ssh, uncomment this
+#[gpg]
+#	format = ssh
+[commit]
+	gpgsign = true
