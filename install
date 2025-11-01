@@ -1,0 +1,451 @@
+#!/usr/bin/env bash
+
+# A script to install my development environments.
+
+COLOR_RESET='\033[0m'
+COLOR_RED='\033[31m'
+COLOR_GREEN='\033[32m'
+COLOR_YELLOW='\033[33m'
+COLOR_BLUE='\033[34m'
+COLOR_BOLD='\033[1m'
+COLOR_UNDERLINED='\033[4m'
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+SCRIPT="install"
+INFO=$(cat <<EOF
+Install or update my dotfiles.
+This script is idempotent, therfore it can be executed several times safely.
+EOF
+)
+
+function usage() {
+    echo
+    echo "${INFO}"
+    echo
+    echo -e " ${COLOR_UNDERLINED}Usage:\033[0m $SCRIPT [arguments]"
+    echo
+    echo "          Options:"
+    echo "              -h           display this help"
+    echo
+    echo "          arguments:"
+    echo "              shell       install dotfiles for shell (sh, bash, zsh)"
+    echo "              vim         install dotfiles for vim"
+    echo "              tmux        install dotfiles for tmux"
+    echo "              git         install dotfiles for git"
+    echo "              bin         install a bunch of bin scripts"
+    echo "              desktop     install desktop requirements"
+    echo
+    echo "          aliases:"
+    echo "              all         default, install all dotfiles"
+    echo "              server      install all dotfiles but desktop"
+    echo
+    echo -e " ${COLOR_UNDERLINED}Exemples:\033[0m "
+    echo -e "       $SCRIPT"
+    echo -e "       $SCRIPT shell git vim"
+    echo
+
+    exit 255
+}
+
+#===============================================================================
+#
+# Utils for printing
+#
+#===============================================================================
+
+################################################################################
+# Print an info message
+################################################################################
+function print_info {
+    echo -e "${COLOR_BLUE}ℹ${COLOR_RESET} $@"
+}
+
+################################################################################
+# Print a success message
+################################################################################
+function print_success {
+    echo -e "${COLOR_GREEN}✓${COLOR_RESET} $@"
+}
+
+################################################################################
+# Print a warning message
+################################################################################
+function print_warning {
+    echo -e "${COLOR_YELLOW}⚠${COLOR_RESET} $@"
+}
+
+################################################################################
+# Print an error message
+################################################################################
+function print_error {
+    echo -e "${COLOR_RED}✗${COLOR_RESET} $@"
+}
+
+################################################################################
+# Print a section header
+################################################################################
+function print_header {
+    echo -e "${COLOR_BOLD}╰┈➤ $@${COLOR_RESET}"
+}
+
+#===============================================================================
+#
+# Package managers
+#
+#===============================================================================
+
+function package_manager_arch_install {
+    command -v pacman >/dev/null 2>&1 && {
+        print_warning "Require sudo rights to install Arch package"
+        sudo pacman -S "$@"
+    }
+}
+function package_manager_apt_install {
+    command -v apt-get >/dev/null 2>&1 && {
+        print_warning "Require sudo rights to install debian package"
+        sudo apt-get install "$@"
+    }
+}
+function package_manager_brew_install {
+    ##
+    # Install brew if needed
+    ##
+    [ "$(uname -s)" == "Darwin" ] && [ ! -f '/opt/homebrew/bin/brew' ] && {
+        (/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && eval "$(/opt/homebrew/bin/brew shellenv)")
+    }
+
+    command -v brew >/dev/null 2>&1 && {
+        brew install "$@"
+    }
+}
+
+#===============================================================================
+#
+# Link dotfiles
+#
+#===============================================================================
+
+################################################################################
+# Link a file to a destination.
+#
+# If the file already exists (meaning it's not a symlink) it will be deleted.
+#
+# Usage: link_file source destination
+################################################################################
+function link_file {
+    local src="${1}"
+    local dest="${2}"
+
+    if [[ -z "${src}" ]] || [[ -z "${dest}" ]] then
+        print_error "Unable to link file, src (${COLOR_BOLD}${src}${COLOR_RESET}) or dest (${COLOR_BOLD}${dest}${COLOR_RESET}) is empty"
+        exit 255
+    fi
+
+    # Check for src existence
+    if [[ ! -e "${src}" ]] ; then
+        print_error "Source file ${COLOR_BOLD}${src}${COLOR_RESET} does not exist"
+        exit 255
+    fi
+
+
+    if [[ -L "${dest}" ]] ; then
+        if [[ "$(readlink "${dest}")" != "${src}" ]] ; then
+            print_warning "${COLOR_BOLD}${dest}${COLOR_RESET} already exists but not linked to expected file"
+        else
+            print_success "${COLOR_BOLD}${dest}${COLOR_RESET} already installed"
+        fi
+    else
+        # Ensure destination dir exists
+        dest_dir="$(dirname "${dest}")"
+        if [[ -n "${dest_dir}" ]] && [[ ! -e "${dest_dir}" ]] ; then
+            if ! mkdir -p "${dest_dir}"; then
+                print_error "Failed to create directory ${COLOR_BOLD}${dest_dir}${COLOR_RESET}"
+                exit 255
+            fi
+            print_info "Created ${dest_dir}"
+        fi
+
+        # Remove file if exists
+        if [[ -e "${dest}" ]] ; then
+           rm -rf "${dest}" 
+           print_info "Deleted existing ${dest}"
+        fi
+
+        # finally create symlink
+        if ! ln -s "${src}" "${dest}" ; then
+            print_error "Failed to create symlink from ${COLOR_BOLD}${src}${COLOR_RESET} to ${COLOR_BOLD}${dest}${COLOR_RESET}"
+            exit 255
+        fi
+        print_success "Linked ${COLOR_BOLD}${dest}${COLOR_RESET}"
+    fi
+}
+
+################################################################################
+#
+# Link every files in a folder to destination filder
+#
+#
+# Usage: link_folder source destination
+################################################################################
+function link_folder {
+    local src="${1}"
+    local dest="${2}"
+
+    if [[ -z "${src}" ]] || [[ -z "${dest}" ]] then
+        print_error "Unable to link file, src (${COLOR_BOLD}${src}${COLOR_RESET}) or dest (${COLOR_BOLD}${dest}${COLOR_RESET}) is empty"
+        exit 255
+    fi
+
+    # ensure trailing slash
+    src="${src%/}"
+    dest="${dest%/}"
+
+    # Check for src existence
+    if [[ ! -e "${src}" ]] ; then
+        print_error "Source directory ${COLOR_BOLD}${src}${COLOR_RESET} does not exist"
+        exit 255
+    fi
+    if [[ ! -d "${src}" ]] ; then
+        print_error "Source directory ${COLOR_BOLD}${src}${COLOR_RESET} is not a folder"
+        exit 255
+    fi
+
+    for file in "$src"/* ; do
+        if [[ -f "${file}" ]] ; then
+            filename="$(basename "${file}")"
+            link_file "${file}" "${dest}/${filename}"
+        fi
+    done
+}
+
+#===============================================================================
+#
+# Install dotfiles and environment
+#
+#===============================================================================
+
+################################################################################
+#
+# Desktop environment
+#
+# This section installs common tools I use on a daily basis in a GUI environment
+#
+################################################################################
+install_desktop() {
+    print_header "Install desktop requirements"
+
+    # Install desktop applications
+    package_manager_brew_install --cask firefox signal nextcloud
+    # Install for GPG
+    package_manager_brew_install gnupg pinentry-mac
+    # Install for yubikey
+    package_manager_brew_install ykman
+
+    # Import GPG key and make sure the private key is known from gpg
+    [[ "$(gpg --list-key 0FE9A9C60ED65AFD | grep rsa4096 | wc -l)" -ge 1 ]] || {
+        print_info "Importing GPG key"
+        gpg --import $DIR/0FE9A9C60ED65AFD.gpg.pub
+        gpg --card-status
+        print_info "Restart gpg agent"
+        gpgconf --kill gpg-agent
+        gpgconf --launch gpg-agent
+    }
+}
+
+################################################################################
+#
+# shell configuration, common for bash and zsh
+#
+################################################################################
+install_shell() {
+    print_header "Install shell requirements"
+
+    package_manager_arch_install zsh ack htop wget curl tree elinks fzf highlight
+    package_manager_apt_install zsh ack-grep htop wget curl tree elinks
+    package_manager_brew_install ripgrep htop fzf bat tree httpie jq
+
+    # Use starship as prompt
+    package_manager_arch_install starship
+    package_manager_apt_install starship
+    package_manager_brew_install starship
+
+    link_file ${DIR}/config/starship.toml ~/.config/starship.toml
+
+    # Install sh commons
+    link_file ${DIR}/sh/shrc ~/.shrc
+    link_folder ${DIR}/sh/shrc.d ~/.shrc.d
+
+    # Install bash configuration
+    link_file ${DIR}/bash/bashrc ~/.bashrc
+    link_folder ${DIR}/bash/bashrc.d ~/.bashrc.d
+    link_folder ${DIR}/bash/bashrc-pre.d ~/.bashrc-pre.d
+
+    # Install oh-my-zsh
+    # I do no tuse oh-my-zsh anymore
+    # [[ -d ~/.oh-my-zsh ]] || curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+    # Install custom
+    # rm -rf ~/.zsh-custom > /dev/null 2>&1
+    # ln -s ${DIR}/zsh/zsh-custom ~/.zsh-custom
+
+    # Install zsh configuration
+    link_file ${DIR}/zsh/zshrc ~/.zshrc
+    link_folder ${DIR}/zsh/zshrc-pre.d ~/.zshrc-pre.d
+    link_folder ${DIR}/zsh/zshrc.d ~/.zshrc.d
+}
+
+
+##
+# vim configuration
+##
+install_vim() {
+    print_header "Install vim requirements"
+
+    package_manager_arch_install vim
+    package_manager_apt_install vim-nox
+    package_manager_brew_install vim
+
+    # Install vim configuration files
+    link_file ${DIR}/vim/vimrc ~/.vimrc
+    link_file ${DIR}/vim/vim/coc-settings.json ~/vim/coc-settings.json
+    link_folder ${DIR}/vim/vim/UltiSnips/ ~/.vim/UltiSnips/
+    link_folder ${DIR}/vim/vim/UltiSnipsPlugins/ ~/.vim/UltiSnipsPlugins/
+    link_folder ${DIR}/vim/vim/autoload/ ~/.vim/autoload/
+    link_folder ${DIR}/vim/vim/ftdetect/ ~/.vim/ftdetect/
+    link_folder ${DIR}/vim/vim/ftplugin/ ~/.vim/ftplugin/
+    link_folder ${DIR}/vim/vim/plugin/ ~/.vim/plugin/
+    link_folder ${DIR}/vim/vim/pythonx/ ~/.vim/pythonx/
+    link_folder ${DIR}/vim/vim/spell/ ~/.vim/spell/
+
+    # I do not use vundle anymore but I keep install script for reference.
+    # install Vundle if not already installed
+    #[[ -d ~/.vim/bundle/Vundle.vim ]] || git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    ## Install vundle dependencies
+    #vim +PluginInstall +qall
+
+    # Install Vim-plug
+    [[ -f ~/.vim/autoload/plug.vim ]] || curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    vim +PlugInstall +qall
+
+    #[[ ! -d ~/.vim/bundle/command-t/ ]] || {
+    #    # Install command-t
+    #    # Compilation is required
+    #    cd ~/.vim/bundle/command-t/ruby/command-t
+    #    ruby extconf.rb
+    #    make
+    #    cd $DIR
+    #}
+    #[[ -f /usr/share/fonts/misc/PowerlineSymbols.otf ]] || {
+    #    # Install vim-airline/vim-powerline font
+    #    sudo wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -O /usr/share/fonts/misc/PowerlineSymbols.otf
+    #    fc-cache -vf ~/.fonts/
+    #    mkdir -p ~/.config/fontconfig/conf.d/
+    #    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -O ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
+    #}
+    #[[ ! -d ~/.vim/bundle/coc.nvim/ ]] || {
+    #    # Install coc extensions
+    #    vim +'CocInstall coc-tsserver coc-json coc-html coc-css coc-prettier coc-eslint coc-python coc-phpls coc-yaml coc-git' +qall
+    #    # vim +'CocCommand extensions.forceUpdateAll' +qall
+    #    cd $DIR
+    #}
+}
+
+##
+# tmux configuration
+##
+install_tmux() {
+    print_header "Install tmux requirements"
+
+    package_manager_arch_install tmux
+    package_manager_apt_install tmux
+    package_manager_brew_install tmux
+
+    link_file ${DIR}/tmux/tmux.conf ~/.tmux.conf
+    # Install tmux plugin manager
+    mkdir -p ~/.tmux/plugins/
+    [[ -d ~/.tmux/plugins/tpm ]] || {
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \
+            ~/.tmux/plugins/tpm/bin/install_plugins
+        }
+}
+
+##
+# git configuration
+##
+install_git() {
+    print_header "Install git requirements"
+
+    package_manager_brew_install git tig
+
+    link_file ${DIR}/git/gitconfig ~/.gitconfig
+
+	print_info "Add some .gitconfig to your working director to use different settings"
+}
+
+##
+# Add some binaries
+##
+install_custom_binaries() {
+    print_header "Install custom binaries"
+
+    if [[ -d "./bin/" ]]; then
+        for file in ${DIR}/bin/* ; do
+            print_warning "The script requires sudo to link binaries to /usr/local/bin/"
+            [[ -f "/usr/local/bin/$(basename $file)" ]] || {
+                sudo ln -s "${file}" "/usr/local/bin/$(basename $file)"
+            }
+        done
+    fi
+}
+
+install_module() {
+    for item in "${@}" ; do
+        case "${item}" in
+            # Aliases
+            all)
+                install_module "shell" "desktop" "vim" "tmux" "git" "bin"
+                ;;
+            server)
+                install_module "shell" "vim" "tmux" "git" "bin"
+                ;;
+            test)
+                install_module "shell" "vim"
+                ;;
+
+            # Modules
+            shell|sh|bash|zsh)
+                install_shell
+                ;;
+            desktop)
+                install_desktop
+                ;;
+            vim)
+                install_vim
+                ;;
+            tmux)
+                install_tmux
+                ;;
+            git)
+                install_git
+                ;;
+            bin)
+                install_custom_binaries
+                ;;
+            *)
+                usage
+                ;;
+        esac
+    done
+
+}
+
+main() {
+    install_module "${@:-"all"}"
+
+    echo "*******************************"
+    echo "*    Restart your terminal    *"
+    echo "*******************************"
+}
+
+main "${@}"

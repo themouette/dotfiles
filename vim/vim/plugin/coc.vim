@@ -4,6 +4,20 @@
 " Ensure update time is short to have a better feedback loop
 set updatetime=300
 
+" Install plugins
+let g:coc_global_extensions = [
+    \  'coc-tsserver',
+    \  'coc-json',
+    \  'coc-html',
+    \  'coc-css',
+    \  'coc-prettier',
+    \  'coc-eslint',
+    \  'coc-python',
+    \  'coc-phpls',
+    \  'coc-yaml',
+    \  'coc-git'
+    \]
+
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
             \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 

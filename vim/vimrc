@@ -22,7 +22,7 @@ endif
 
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
 " Plug 'rakr/vim-one'
 Plug 'hachy/eva01.vim', { 'branch': 'main' }
 Plug 'joshdick/onedark.vim'
@@ -91,10 +91,13 @@ call plug#end()            " required
 filetype plugin indent on    " required
 
 " reload vimrc on change
-augroup vimrc_autoreload
-    autocmd!
-    autocmd BufWritePost .vimrc :so ~/.vimrc
-augroup END
+if has ('autocmd') " Remain compatible with earlier versions
+ augroup vimrc     " Source vim configuration upon save
+    autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+    autocmd! BufWritePost $MYGVIMRC if has('gui_running') | so % | echom "Reloaded " . $MYGVIMRC | endif | redraw
+    autocmd! BufWritePost ~/.vim/* source % | echom "Reloaded " . % | redraw
+  augroup END
+endif " has autocmd
 
 " Set title on X window
 set title
@@ -168,16 +171,18 @@ if version >= 730
 endif
 
 " Color scheme
-let &t_Co=256
-let g:solarized_termcolors=256
+" let &t_Co=256
+" let g:solarized_termcolors=256
 "set background=dark
 "colorscheme solarized
 
-"colorscheme onedark
+" Enable 24-bit color
+set termguicolors 
+colorscheme onedark
 "set background=dark
 
-colorscheme eva01
-set background=dark
+"colorscheme eva01
+"set background=dark
 " overide max-width column color
 hi ColorColumn term=reverse ctermbg=236 guibg=#2C323C
 

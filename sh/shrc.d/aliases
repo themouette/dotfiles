@@ -6,3 +6,14 @@ alias myip6="curl http://ipv6.whatismyip.akamai.com/"
 alias my_ip6="curl http://ipv6.whatismyip.akamai.com/"
 
 alias vim-conflict="vim -p \$(git ls-files -m| uniq)"
+
+# Aliases for ls
+alias ls='ls -F --color=always --group-directories-first'
+alias l='ls -lah'
+alias la='ls -lAh'
+alias ll='ls -lh'
+
+alias tree='tree -C'
+
+# Aliases for Git
+alias gst='git status'

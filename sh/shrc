@@ -18,6 +18,10 @@ iterm_terminal() {
 	[[ "$TERM_PROGRAM" =~ ^iTerm ]]
 }
 
-for file in $HOME/.shrc.d/*; do
-    source "$file"
-done
+[[ ! -d "$HOME/.shrc.d" ]] || {
+    for file in $HOME/.shrc.d/*; do
+        source "$file"
+    done
+}
+
+# vim: ft=sh

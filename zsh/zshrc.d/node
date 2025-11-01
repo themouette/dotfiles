@@ -33,9 +33,14 @@ localpnp () {
 }
 
 # Add volta to PATH
-if [[ -d "${HOME}/.volta" ]] ; then
+if [[ -d "${HOME}/.volta" ]] && command -v volta >/dev/null 2>&1 ; then
     export VOLTA_HOME="$HOME/.volta"
     export PATH="$VOLTA_HOME/bin:$PATH"
+fi
+
+# Added by Yarn Switch
+if [[ -f "${HOME}/.yarn/switch/env" ]] ; then
+    source "${HOME}/.yarn/switch/env"
 fi
 
 # vim: set ft=sh:

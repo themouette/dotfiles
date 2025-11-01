@@ -1,0 +1,6 @@
+# Set default editor
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# vim: set ft=sh

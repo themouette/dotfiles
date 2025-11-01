@@ -1,48 +1,49 @@
 [merge]
-	tool = vimdiff
+    tool = vimdiff
+	conflictstyle = zdiff3
+
 [core]
-  editor = vim
-	pager = less -+F -+X
-	hooksPath = /usr/local/dd/global_hooks
-[color]
-  ui = auto
-  status = auto
-  branch = auto
-  interactive = auto
-  diff = auto
-[color "branch"]
-  current = yellow
-  local = yellow
-  remote = green
-  current = yellow
-  current = yellow
-  current = yellow
-  current = yellow
-  current = yellow
+    editor = vim
+    pager = less -+F -+X
+    excludesfile = ~/.gitignore
+
+[column]
+    # lists shuld use a single column
+    ui = never
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[init]
+    defaultBranch = main
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[push]
+	default = simple
+	autoSetupRemote = true
+#        followTags = true
+#[fetch]
+#        prune = true
+#        pruneTags = true
+#       all = true
+[help]
+	autocorrect = prompt
+[commit]
+	verbose = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
 [color "diff"]
   meta = yellow
   frag = magenta
-  old = red 
-  new = green
-  meta = yellow
-  frag = magenta
-  old = red 
-  new = green
-  meta = yellow
-  frag = magenta
-  old = red 
-  new = green
-  meta = yellow
-  frag = magenta
-  old = red 
-  new = green
-  meta = yellow
-  frag = magenta
-  old = red 
-  new = green
-  meta = yellow
-  frag = magenta
-  old = red 
+  old = red
   new = green
 [color "status"]
   added = yellow
