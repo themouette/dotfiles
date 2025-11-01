@@ -1,0 +1,7 @@
+# To start ollama now and restart at login:
+#   brew services start ollama
+#
+# Or, if you don't want/need a background service you can just run:
+#     /opt/homebrew/opt/ollama/bin/ollama serve
+
+# :vim ft=sh

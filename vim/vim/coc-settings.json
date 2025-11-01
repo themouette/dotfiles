@@ -19,7 +19,15 @@
       "command": "terraform-lsp",
       "filetypes": ["terraform"],
       "initializationOptions": {}
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
     }
   },
-  "tsserver.useLocalTsdk": true
+  "tsserver.useLocalTsdk": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

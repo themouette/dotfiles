@@ -256,3 +256,10 @@ ${txtcyn}[ Alt]-!     ${txtrst}completer le nom d'une commande
 ${txtcyn}[ Alt]-^     ${txtrst}completer l'historique"
  
 }
+
+# Macos only
+function setup_DNS_google () {
+    CHANNEL=`route get example.com | grep interface | sed -n -e 's/^.*interface: //p'`
+    NETWORK=`networksetup -listnetworkserviceorder | grep $CHANNEL | sed -n -e 's/^.*Port: //p' | sed -n -e 's/,.*//p'`
+    sudo networksetup -setdnsservers $NETWORK 8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844
+}
