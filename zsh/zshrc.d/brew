@@ -1,0 +1,13 @@
+if [[ -f /opt/homebrew/bin/brew ]] ; then
+    # Only source hombrew conf if not already done
+    if [[ -z "$HOMEBREW_PREFIX" ]] ; then
+        echo "EVAL BREW"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+
+    # Force certain more-secure behaviours from homebrew
+    export HOMEBREW_NO_INSECURE_REDIRECT=1
+    export HOMEBREW_CASK_OPTS=--require-sha
+fi
+
+# vim: set ft=sh :

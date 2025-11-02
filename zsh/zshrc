@@ -1,3 +1,6 @@
+# profiling: https://www.bigbinary.com/blog/zsh-profiling
+zmodload zsh/zprof
+
 # Created by `pipx` on 2025-10-27 20:52:17
 export PATH="$PATH:/Users/julien.muetton/.local/bin"
 
@@ -32,6 +35,9 @@ setopt hist_find_no_dups
 # Completion with highlight and arrow navigation
 autoload -U compinit && compinit
 zstyle ':completion:*' menu select
+# Shift+TAB select previous item in completion
+zmodload zsh/complist
+bindkey -M menuselect "${terminfo[kcbt]}" reverse-menu-complete
 
 # Syntax highlight in commands
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
@@ -56,3 +62,6 @@ fi
         source "$file"
     done
 }
+
+# profiling: https://www.bigbinary.com/blog/zsh-profiling
+zprof
