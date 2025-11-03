@@ -16,14 +16,26 @@
   "rust-analyzer.checkOnSave.command": "clippy",
   "languageserver": {
     "terraform": {
-      "command": "terraform-lsp",
-      "filetypes": ["terraform"],
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": ["terraform", "tf"],
       "initializationOptions": {}
     },
     "golang": {
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
+    },
+    "tsgo": {
+      "command": "./.yarn/sdks/typescript-go/lib/tsgo",
+      "args": ["--lsp", "--stdio"],
+      "filetypes": [
+        "typescript",
+        "typescriptreact",
+        "javascript",
+        "javascriptreact"
+      ],
+      "rootPatterns": ["tsconfig.json", "jsconfig.json", ".git/"]
     }
   },
   "tsserver.useLocalTsdk": true,

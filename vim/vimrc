@@ -86,7 +86,7 @@ Plug 'pantharshit00/vim-prisma'
 "
 
 Plug 'github/copilot.vim'
-
+Plug 'Exafunction/windsurf.vim'
 call plug#end()            " required
 filetype plugin indent on    " required
 
@@ -95,7 +95,7 @@ if has ('autocmd') " Remain compatible with earlier versions
  augroup vimrc     " Source vim configuration upon save
     autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
     autocmd! BufWritePost $MYGVIMRC if has('gui_running') | so % | echom "Reloaded " . $MYGVIMRC | endif | redraw
-    autocmd! BufWritePost ~/.vim/* source % | echom "Reloaded " . % | redraw
+    autocmd! BufWritePost ~/.vim/*.vim source % | echom "Reloaded " . % | redraw
   augroup END
 endif " has autocmd
 
@@ -177,7 +177,7 @@ endif
 "colorscheme solarized
 
 " Enable 24-bit color
-set termguicolors 
+set termguicolors
 colorscheme onedark
 "set background=dark
 
