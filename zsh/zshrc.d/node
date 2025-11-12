@@ -33,13 +33,14 @@ localpnp () {
 }
 
 # Add volta to PATH
-if [[ -d "${HOME}/.volta" ]] && command -v volta >/dev/null 2>&1 ; then
+if [[ -d "${HOME}/.volta" ]] && [[ ":$PATH:" != *":$HOME/.volta/bin:"* ]] && command -v volta >/dev/null 2>&1 ; then
     export VOLTA_HOME="$HOME/.volta"
     export PATH="$VOLTA_HOME/bin:$PATH"
 fi
 
 # Added by Yarn Switch
-if [[ -f "${HOME}/.yarn/switch/env" ]] ; then
+# Note that vim only sources .zshenv so it should be present there as well
+if [[ ":$PATH:" != *":$HOME/.yarn/switch/bin:"* ]] && [[ -f "${HOME}/.yarn/switch/env" ]] ; then
     source "${HOME}/.yarn/switch/env"
 fi
 

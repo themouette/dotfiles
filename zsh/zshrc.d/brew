@@ -1,7 +1,6 @@
 if [[ -f /opt/homebrew/bin/brew ]] ; then
     # Only source hombrew conf if not already done
     if [[ -z "$HOMEBREW_PREFIX" ]] ; then
-        echo "EVAL BREW"
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 

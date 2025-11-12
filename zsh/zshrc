@@ -14,10 +14,10 @@ export SCFW_HOME="/Users/julien.muetton/.scfw"
 # END SCFW MANAGED BLOCK
 
 # Export bindings a la emacs, vim bindings seemed unreliable
-bindkey -e
+#bindkey
 # And partial search in history with up/down arrows
-bindkey '^[[A' up-line-or-search
-bindkey '^[[B' down-line-or-search
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
 
 # History
 HISTSIZE=5000
@@ -39,13 +39,6 @@ zstyle ':completion:*' menu select
 zmodload zsh/complist
 bindkey -M menuselect "${terminfo[kcbt]}" reverse-menu-complete
 
-# Syntax highlight in commands
-# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
-# brew install zsh-syntax-highlighting
-if [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] ; then
-    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
 [[ ! -d $HOME/.zshrc-pre.d ]] || {
     for file in $HOME/.zshrc-pre.d/*; do
         source "$file"
@@ -62,6 +55,13 @@ fi
         source "$file"
     done
 }
+
+# Syntax highlight in commands
+# https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
+# brew install zsh-syntax-highlighting
+if [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] ; then
+    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 # profiling: https://www.bigbinary.com/blog/zsh-profiling
 #zprof
