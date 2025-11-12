@@ -255,6 +255,8 @@ install_desktop() {
     [[ "$(uname -s)" == "Darwin" ]] && {
         print_info "Always show hidden files in finder"
         defaults write com.apple.finder AppleShowAllFiles True; killall Finder
+        print_info "Do not reorder desktops automatically"
+        defaults write com.apple.dock mru-spaces False
     }
 }
 
