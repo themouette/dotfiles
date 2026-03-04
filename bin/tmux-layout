@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Apply standard work layout to current tmux window:
+#   - Left pane:  full height, 70% width
+#   - Right panes: 30% width, split in two equal halves
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DIR="${1:-$(pwd)}"
+
+tmux split-window -h -p 30 -c "$DIR"   # split right at 30%
+tmux split-window -v -p 50 -c "$DIR"   # split right pane in half
+tmux select-pane -L                     # focus back to left pane
