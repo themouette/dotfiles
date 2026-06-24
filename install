@@ -396,11 +396,22 @@ install_git() {
 install_custom_binaries() {
     print_header "Install custom binaries"
 
+    DEST_DIR="${HOME}/.local/bin"
+    if [[ ! -d "${DEST_DIR}" ]] && [[ -d "/usr/local/bin" ]]; then
+        DEST_DIR="/usr/local/bin"
+    fi
+
+    print_info "Installing binaries to ${DEST_DIR}"
+
     if [[ -d "./bin/" ]]; then
-        for file in ${DIR}/bin/* ; do
-            print_warning "The script requires sudo to link binaries to /usr/local/bin/"
-            [[ -f "/usr/local/bin/$(basename $file)" ]] || {
-                sudo ln -s "${file}" "/usr/local/bin/$(basename $file)"
+        for file in "${DIR}"/bin/* ; do
+            [[ -f "${DEST_DIR}/$(basename "$file")" ]] || {
+                if [[ -w "${DEST_DIR}" ]] ; then
+                    ln -s "${file}" "${DEST_DIR}/$(basename "$file")"
+                else
+                    print_warning "The script requires sudo to link binaries to ${DEST_DIR}"
+                    sudo ln -s "${file}" "${DEST_DIR}/$(basename "$file")"
+                fi
             }
         done
     fi
