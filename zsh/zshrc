@@ -16,8 +16,14 @@ export SCFW_HOME="/Users/julien.muetton/.scfw"
 # Export bindings a la emacs, vim bindings seemed unreliable
 #bindkey
 # And partial search in history with up/down arrows
-bindkey '^[[A' history-beginning-search-backward
-bindkey '^[[B' history-beginning-search-forward
+# up/down-line-or-beginning-search navigates within multiline buffers first,
+# then falls back to prefix history search at the top/bottom line.
+autoload -U up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey "^?" backward-delete-char
 
 # History
 HISTSIZE=5000
