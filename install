@@ -33,6 +33,7 @@ function usage() {
     echo "              vim         install dotfiles for vim"
     echo "              tmux        install dotfiles for tmux"
     echo "              git         install dotfiles for git"
+    echo "              claude      install configuration for Claude Code"
     echo "              bin         install a bunch of bin scripts"
     echo "              desktop     install desktop requirements"
     echo
@@ -391,6 +392,16 @@ install_git() {
 }
 
 ##
+# Claude Code configuration
+##
+install_claude() {
+    print_header "Install Claude Code configuration"
+
+    link_folder ${DIR}/claude/commands ~/.claude/commands
+    link_folder ${DIR}/claude/agents ~/.claude/agents
+}
+
+##
 # Add some binaries
 ##
 install_custom_binaries() {
@@ -446,6 +457,9 @@ install_module() {
                 ;;
             git)
                 install_git
+                ;;
+            claude)
+                install_claude
                 ;;
             bin)
                 install_custom_binaries
