@@ -108,6 +108,8 @@ After receiving the plan-reviewer findings:
    - Which sibling plans need changes and why
    - Which are unaffected
 
+   Only consider sibling plans whose status in STATE.md is `Draft`, `In Review`, `Plan Reviewed`, or `Assessed` — skip any sibling already at `In Progress`, `Done`, or `Blocked`, as those are past the point where a plan update is safe.
+
    If any sibling plans need updating, ask the user: **"Do you want me to update the affected sibling plans now?"** If yes, apply updates one plan at a time (using the **Plan** subagent for each), following the same confirmation pattern as Step 4.
 
 ---
@@ -182,7 +184,7 @@ Update STATE.md: check the `Findings addressed` checkbox in the plan's section.
 
 Once all findings from Step 8 are resolved, create a **draft** PR for the branch using `gh pr create --draft`.
 
-The PR description must include a **"Related PRs"** section listing all sibling PRs in the group (i.e., other subplans from STATE.md that already have a PR URL). For each sibling, include its PR URL and a one-line description of its scope. If no sibling PRs exist yet, omit the section.
+The PR description must include a **"Related PRs"** section listing all sibling PRs in the group (i.e., other subplans from STATE.md that already have a PR URL). For each sibling, use the GitHub shorthand `#PRNUMBER` (extracted from the PR URL) and a one-line description of its scope. If no sibling PRs exist yet, omit the section.
 
 Example:
 ```
@@ -196,7 +198,7 @@ Then update STATE.md:
 - Set PR Status to `Draft`
 - Check the `PR created` checkbox in the plan's section
 
-Finally, update the descriptions of all sibling PRs listed in STATE.md to add or refresh their own "Related PRs" section to include this newly created PR.
+Finally, update the descriptions of all sibling PRs in STATE.md whose PR Status is `Draft` or `Ready for Review` to add or refresh their own "Related PRs" section to include this newly created PR, using `#PRNUMBER` shorthand for all PR references.
 
 ---
 
