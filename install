@@ -420,6 +420,8 @@ install_pi_dev() {
     mkdir -p ~/.pi/agent
     link_file ${DIR}/pi/settings.json ~/.pi/agent/settings.json
     link_file ${DIR}/pi/mcp.json ~/.pi/agent/mcp.json
+    link_folder ${DIR}/pi/prompts ~/.pi/agent/prompts
+    link_folder ${DIR}/pi/agents ~/.pi/agent/agents
 
     # Install what is specific to datadog configuration
     if [[ -n "${DATADOG_ROOT:-}" ]]; then
