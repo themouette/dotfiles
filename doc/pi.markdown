@@ -23,6 +23,9 @@ Prompt templates in `pi/prompts/` become slash commands:
   findings, draft PR.
 - `/brief <brief-file>` — turn a brief into `main.md` plus `subplan/` files
   ready for `/dev`.
+- `/review-pr <PR-number-or-URL>` — review a coworker's PR with the
+  code-review-reporter agent (fetches read-only, never touches the working
+  tree; posts a PR comment only after explicit approval).
 
 ## Agents
 
