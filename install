@@ -34,6 +34,7 @@ function usage() {
     echo "              tmux        install dotfiles for tmux"
     echo "              git         install dotfiles for git"
     echo "              claude      install configuration for Claude Code"
+    echo "              pi-dev      install Pi development configuration"
     echo "              bin         install a bunch of bin scripts"
     echo "              desktop     install desktop requirements"
     echo
@@ -402,6 +403,31 @@ install_claude() {
 }
 
 ##
+# Pi development configuration
+##
+install_pi_dev() {
+    print_header "Install Pi development configuration"
+
+    if [[ -n "${DATADOG_ROOT:-}" ]]; then
+        if [[ ! -d "$DATADOG_ROOT/datadog-pi-packages" ]]; then
+            print_info "Cloning datadog-pi-packages..."
+            git clone git@github.com:ddoghq-sandbox/datadog-pi-packages.git "$DATADOG_ROOT/datadog-pi-packages"
+        fi
+    else
+        print_info "DATADOG_ROOT is not defined, skipping datadog-pi-packages clone"
+    fi
+
+    mkdir -p ~/.pi/agent
+    link_file ${DIR}/pi/settings.json ~/.pi/agent/settings.json
+    link_file ${DIR}/pi/mcp.json ~/.pi/agent/mcp.json
+
+    # Install what is specific to datadog configuration
+    if [[ -n "${DATADOG_ROOT:-}" ]]; then
+        link_file ${DIR}/pi/session-cost.json ~/.pi/agent/session-cost.json
+    fi
+}
+
+##
 # Add some binaries
 ##
 install_custom_binaries() {
@@ -433,7 +459,7 @@ install_module() {
         case "${item}" in
             # Aliases
             all)
-                install_module "shell" "desktop" "vim" "tmux" "git" "bin"
+                install_module "shell" "desktop" "vim" "tmux" "git" "pi-dev" "bin"
                 ;;
             server)
                 install_module "shell" "vim" "tmux" "git" "bin"
@@ -460,6 +486,9 @@ install_module() {
                 ;;
             claude)
                 install_claude
+                ;;
+            pi-dev)
+                install_pi_dev
                 ;;
             bin)
                 install_custom_binaries

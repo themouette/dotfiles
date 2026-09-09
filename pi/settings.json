@@ -1,0 +1,47 @@
+{
+  "defaultProvider": "ai-gw-baseten",
+  "defaultModel": "baseten/zai-org/GLM-5.3",
+  "defaultThinkingLevel": "medium",
+  "packages": [
+    "../../dd/datadog-pi-packages/packages/compaction-continue",
+    "../../dd/datadog-pi-packages/packages/refresh-models",
+    "../../dd/datadog-pi-packages/packages/research-web",
+    "../../dd/datadog-pi-packages/packages/session-cost",
+    "npm:@datadog/pi-plugin",
+    "npm:@getpipher/vision",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:pi-mcp-adapter",
+    "npm:pi-powerline-footer",
+    "npm:pi-subagents",
+    "../../Projects/datadog/datadog-pi-packages/packages/notifications",
+    "../../Projects/datadog/datadog-pi-packages/packages/claude-marketplace"
+  ],
+  "lastChangelogVersion": "0.85.1",
+  "theme": "dark",
+  "powerline": {
+    "customItems": [
+      {
+        "id": "session-cost",
+        "statusKey": "session-cost",
+        "position": "secondary",
+        "excludeFromExtensionStatuses": true
+      }
+    ]
+  },
+  "claudeMarketplace": {
+    "enabled": true,
+    "skills": {
+      "sync": true
+    },
+    "commands": {
+      "sync": true
+    },
+    "agents": {
+      "sync": true
+    },
+    "pluginRoot": {
+      "rewrite": true
+    },
+    "marketplaceCacheDir": "~/.pi/agent/claude-marketplace/marketplaces"
+  }
+}
