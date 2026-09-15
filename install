@@ -27,7 +27,7 @@ function usage() {
     echo
     echo "          Options:"
     echo "              -h           display this help"
-    echo "              -f           force: delete conflicting files instead of backing them up"
+    echo '              -b           back up conflicting files as <file>.bck instead of deleting'
     echo
     echo "          arguments:"
     echo "              shell       install dotfiles for shell (sh, bash, zsh)"
@@ -45,7 +45,7 @@ function usage() {
     echo
     echo -e " ${COLOR_UNDERLINED}Exemples:\033[0m "
     echo -e "       $SCRIPT"
-    echo -e "       $SCRIPT -f all    (first install: discard default config files)"
+    echo -e "       $SCRIPT -b        (back up replaced files instead of deleting them)"
     echo -e "       $SCRIPT shell git vim"
     echo
 
@@ -134,8 +134,8 @@ function package_manager_brew_install {
 # Link a file to a destination.
 #
 # If the destination already exists (meaning it's not a symlink to the source)
-# it will be backed up as `${destination}.bck` before being replaced,
-# unless the -f flag is set, in which case it is deleted.
+# it will be deleted and replaced, unless the -b flag is set, in which case
+# it is backed up as `${destination}.bck` instead.
 #
 # Usage: link_file source destination
 ################################################################################
@@ -174,7 +174,7 @@ function link_file {
 
         # Replace existing file if present
         if [[ -e "${dest}" ]] ; then
-            if [[ "${FORCE}" == "1" ]] ; then
+            if [[ "${BACKUP}" != "1" ]] ; then
                 rm -rf "${dest}"
                 print_info "Deleted existing ${dest}"
             else
@@ -531,10 +531,10 @@ install_module() {
 }
 
 main() {
-    FORCE=0
-    while getopts ":hf" opt ; do
+    BACKUP=0
+    while getopts ":hb" opt ; do
         case "${opt}" in
-            f) FORCE=1 ;;
+            b) BACKUP=1 ;;
             h|*) usage ;;
         esac
     done

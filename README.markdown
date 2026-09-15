@@ -12,9 +12,8 @@ cd dotfiles
 > Note: you can install only pieces, run `./install -h` to learn more
 >
 > When a file already exists at the destination (e.g. the default `~/.zshrc` on
-> a fresh macOS), it is backed up as `<file>.bck` before being replaced by a
-> symlink. Use `./install -f` to delete conflicting files instead — useful on
-> a first install to discard stock config files.
+> a fresh macOS), it is deleted and replaced by a symlink. Run with
+> `./install -b` to back it up as `<file>.bck` instead of deleting it.
 
 Refer to dedicated documentation to learn more:
 
