@@ -419,7 +419,13 @@ install_pi_dev() {
 
     mkdir -p ~/.pi/agent
     link_file ${DIR}/pi/settings.json ~/.pi/agent/settings.json
-    link_file ${DIR}/pi/mcp.json ~/.pi/agent/mcp.json
+    # mcp.json is machine-local and untracked, seed it from the template on first install only
+    if [[ ! -e "$HOME/.pi/agent/mcp.json" ]] ; then
+        cp "${DIR}/pi/mcp.json.example" "$HOME/.pi/agent/mcp.json"
+        print_info "Created ~/.pi/agent/mcp.json from template"
+    else
+        print_info "~/.pi/agent/mcp.json already exists, leaving it untouched"
+    fi
     link_folder ${DIR}/pi/prompts ~/.pi/agent/prompts
     link_folder ${DIR}/pi/agents ~/.pi/agent/agents
 
