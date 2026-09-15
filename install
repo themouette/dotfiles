@@ -27,6 +27,7 @@ function usage() {
     echo
     echo "          Options:"
     echo "              -h           display this help"
+    echo "              -f           force: delete conflicting files instead of backing them up"
     echo
     echo "          arguments:"
     echo "              shell       install dotfiles for shell (sh, bash, zsh)"
@@ -44,6 +45,7 @@ function usage() {
     echo
     echo -e " ${COLOR_UNDERLINED}Exemples:\033[0m "
     echo -e "       $SCRIPT"
+    echo -e "       $SCRIPT -f all    (first install: discard default config files)"
     echo -e "       $SCRIPT shell git vim"
     echo
 
@@ -131,7 +133,9 @@ function package_manager_brew_install {
 ################################################################################
 # Link a file to a destination.
 #
-# If the file already exists (meaning it's not a symlink) it will be deleted.
+# If the destination already exists (meaning it's not a symlink to the source)
+# it will be backed up as `${destination}.bck` before being replaced,
+# unless the -f flag is set, in which case it is deleted.
 #
 # Usage: link_file source destination
 ################################################################################
@@ -168,10 +172,27 @@ function link_file {
             print_info "Created ${dest_dir}"
         fi
 
-        # Remove file if exists
+        # Replace existing file if present
         if [[ -e "${dest}" ]] ; then
-           rm -rf "${dest}" 
-           print_info "Deleted existing ${dest}"
+            if [[ "${FORCE}" == "1" ]] ; then
+                rm -rf "${dest}"
+                print_info "Deleted existing ${dest}"
+            else
+                local bck="${dest}.bck"
+                # Do not clobber a previous backup
+                if [[ -e "${bck}" ]] ; then
+                    bck="${dest}.$(date +%Y%m%d%H%M%S).bck"
+                    local n=1
+                    while [[ -e "${bck}" ]] ; do
+                        bck="${dest}.$(date +%Y%m%d%H%M%S).$((n++)).bck"
+                    done
+                fi
+                if ! mv "${dest}" "${bck}" ; then
+                    print_error "Failed to back up ${COLOR_BOLD}${dest}${COLOR_RESET} to ${COLOR_BOLD}${bck}${COLOR_RESET}"
+                    exit 255
+                fi
+                print_warning "Backed up existing ${COLOR_BOLD}${dest}${COLOR_RESET} to ${COLOR_BOLD}${bck}${COLOR_RESET}"
+            fi
         fi
 
         # finally create symlink
@@ -510,6 +531,15 @@ install_module() {
 }
 
 main() {
+    FORCE=0
+    while getopts ":hf" opt ; do
+        case "${opt}" in
+            f) FORCE=1 ;;
+            h|*) usage ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+
     install_module "${@:-"all"}"
 
     echo "*******************************"
