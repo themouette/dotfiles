@@ -37,7 +37,15 @@ Subagents in `pi/agents/`:
   PRs. Loads per-repo steering from local-only context files in
   `~/.pi/agent/plan-splitter-contexts/*.md`.
 - `code-review-reporter` — post-change review report (test gaps, security,
-  structure, dead code). Report only, never implements.
+  structure, dead code). Report only, never implements. For changesets whose
+  deliverable is substantially behavior-pinning tests, it refers the exhaustive
+  counterfactual analysis to `test-strength-reviewer` instead of doing it
+  itself.
+- `test-strength-reviewer` — counterfactual (mutation-style) review of
+  behavior-pinning test suites (regression nets, contract pins,
+  characterization suites). For each claimed contract, constructs the regression
+  that keeps every assertion green and reports the holes. Report only, never
+  implements, never posts.
 
 Agents are generic and inherit the session default model. Project-specific
 conventions come from the repo's `AGENTS.md` (via context inheritance) and the
