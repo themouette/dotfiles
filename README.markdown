@@ -6,7 +6,7 @@ or [debian](http://debian.org).
 ```sh
 git clone https://github.com/themouette/dotfiles.git
 cd dotfiles
-./install
+./install all
 ```
 
 > Note: you can install only pieces, run `./install -h` to learn more

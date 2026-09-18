@@ -40,12 +40,12 @@ function usage() {
     echo "              desktop     install desktop requirements"
     echo
     echo "          aliases:"
-    echo "              all         default, install all dotfiles"
+    echo "              all         install all dotfiles"
     echo "              server      install all dotfiles but desktop"
     echo
     echo -e " ${COLOR_UNDERLINED}Exemples:\033[0m "
-    echo -e "       $SCRIPT"
-    echo -e "       $SCRIPT -b        (back up replaced files instead of deleting them)"
+    echo -e "       $SCRIPT all"
+    echo -e "       $SCRIPT -b all    (back up replaced files instead of deleting them)"
     echo -e "       $SCRIPT shell git vim"
     echo
 
@@ -540,7 +540,9 @@ main() {
     done
     shift $((OPTIND - 1))
 
-    install_module "${@:-"all"}"
+    [[ $# -eq 0 ]] && usage
+
+    install_module "${@}"
 
     echo "*******************************"
     echo "*    Restart your terminal    *"
